@@ -1,0 +1,96 @@
+
+
+.cards1{
+    color: #380F43;
+    border-radius: 29px;
+    background: #F1D6FF;
+    box-shadow: 0px 4px 22.9px -3px rgba(56, 15, 67, 0.25);
+    width: 190px;
+    height: 260px;
+    overflow: hidden;
+    }
+.cards2{
+    color: #12273F;
+    width: 190px;
+    height: 260px;
+    flex-shrink: 0;
+    border-radius: 29px;
+    background: #C4DCF3;
+    box-shadow: 0px 4px 22.9px -3px rgba(56, 15, 67, 0.25);
+    overflow: hidden;
+    }
+.cards3{
+    color: #450A0E;
+    border-radius: 29px;
+    background: #FECACE;
+    box-shadow: 0px 4px 22.9px -3px rgba(56, 15, 67, 0.25);
+    width: 190px;
+    height: 260px;
+    overflow: hidden;
+    }
+.cards4{
+    color: #380F43;
+    border-radius: 29px;
+    background: #F1D6FF;
+    box-shadow: 0px 4px 22.9px -3px rgba(56, 15, 67, 0.25);
+    width: 190px;
+    height: 260px;
+    overflow: hidden;
+    }
+.title{
+    font-family: Blinker;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    margin-top: 33px;
+    margin-left: 18px;
+    margin-bottom: 6px;
+}
+
+.number{
+    
+    font-family: Blinker;
+    font-size: 64px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0;
+}
+
+.icon{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 31px;
+    height: 31px;
+    margin: 0;
+    align-self: center;
+
+}
+
+.icon-number{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 145px;
+    height: 77px;
+    gap: 17px;
+    margin-left: 18px;
+    margin-top: -10px;
+
+}
+
+.cards1 .cards2.doodle{
+    width: 235px;
+    height: 130px;
+    flex-shrink: 0;
+    margin-top: -11px;
+}
+.cards4 .doodle{
+    width: 235px;
+    height: 130px;
+    flex-shrink: 0;
+    margin-top: 40px;
+}
+

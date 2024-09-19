@@ -1,0 +1,51 @@
+.footer{
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    padding-bottom: 48px;
+    top: 980px;
+    text-align: center;
+    
+}
+
+.version-dev{
+    color: #692A7B;
+    font-family: Blinker;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    margin-bottom: 48px;
+    margin-top: 14px;
+}
+
+.footer-logo{
+    width: 29px;
+    height: 33px;
+    align-self: center;
+    justify-content: center;
+}
+
+.logotext{
+    display: flex;
+    color: #1B3C5F;
+    font-family: Blinker;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    align-items: center;
+    gap:5px;
+    justify-content: center;
+    margin: 0%;
+    
+}
+
+.logotext span{
+    color: #380F43;
+    font-family: Blinker;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}

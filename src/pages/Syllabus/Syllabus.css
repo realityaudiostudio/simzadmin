@@ -1,0 +1,38 @@
+.syllabus-heading{
+    color: #1B3C5F;
+    text-align: center;
+    font-family: Blinker;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+ 
+    
+}
+
+.syl-image{
+    width: 243px;
+    height: 426px;
+    border-radius: 10px;
+    background: url(<path-to-image>) lightgray 0px 0px / 100% 100% no-repeat;
+    box-shadow: 0px 4px 11px 1px rgba(56, 15, 67, 0.25);
+    
+}
+.syllabus-selector{
+    display: flex;
+    overflow-x: scroll;
+    gap: 30px;
+    margin-top: 100px;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 24px;
+}
+
+.syllabus-selector h3{
+    color: #380F43;
+    text-align: center;
+    font-family: Blinker;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}

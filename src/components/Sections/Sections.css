@@ -1,0 +1,23 @@
+.link p{
+    text-decoration: none;
+    text-align: center;
+    color: #000;
+
+text-align: center;
+font-family: Blinker;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+}
+
+.section-icons{
+    border-radius: 100%;
+    display: flex;
+    width: 52px;
+    height: 52px;
+    fill: #ECD7F7;
+    align-items: center;
+    justify-content: center;
+}
+
