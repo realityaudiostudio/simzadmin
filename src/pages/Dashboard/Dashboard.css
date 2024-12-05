@@ -86,3 +86,48 @@
     gap: 13px;
     flex-wrap: wrap;
 }
+
+/* Centering the loader in the viewport */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100%;   /* Full width */
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .load-inside{
+    display: block;
+    text-align: center;
+    font-family: Blinker;
+    font-size: 16px;
+  }
+  
+  .loader {
+    width: 120px;
+    height: 22px;
+    border-radius: 40px;
+    color: #514b82;
+    border: 2px solid;
+    position: relative;
+  }
+  
+  .loader::before {
+    content: "";
+    position: absolute;
+    margin: 2px;
+    width: 25%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: inherit;
+    background: currentColor;
+    animation: l3 1s infinite linear;
+  }
+  
+  @keyframes l3 {
+    50% { left: 100%; transform: translateX(calc(-100% - 4px)) }
+  }
+  
