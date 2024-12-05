@@ -5,9 +5,49 @@ import SearchButton from "../../assets/SearchButton.svg"
 import Cards from '../../components/Cards/Cards';
 import Footer from '../../components/Footer/Footer';
 import Sections from '../../components/Sections/Sections';
+import { useEffect, useState } from "react";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
 
 function Dashboard() {
+
+const [studentCount,setStudentCount] = useState(0);
+const [courseCount,setCourseCount] = useState(0);
+const [sellCourseCount,setSellCourseCount] = useState(0);
+const [gradeCount,setGradeCount] = useState(0);
+const [loading,setLoading] = useState(true);
+
+useEffect(()=>{
+  getDetailsCount();
+},[]);
+
+async function getDetailsCount() {
+  setLoading(true);
+  try {
+    const[sc,cc,gd] = await Promise.all([
+      supabase.auth.admin.listUsers(),
+      supabase.from("all_courses").select("*",{count:"exact"}),
+      supabase.from("appreciation").select("*",{count:'exact'}).eq('grade_bool',true)
+    ]);
+    setStudentCount(sc.data.total);
+    setCourseCount(cc.count);
+    setSellCourseCount(cc.count);
+    setGradeCount(gd.count);
+    console.log(cc);
+    console.log(sc);
+    
+  } catch (error) {
+    console.error("Error fetching data !");
+  }
+  finally
+  {
+    setLoading(false);
+  }
+  
+  
+}
 
     const links=[
       {
@@ -58,7 +98,7 @@ function Dashboard() {
             <path d="M7.27207 16.895L7.25916 22.9529C7.25916 24.5933 8.52499 26.35 10.075 26.8667L14.1954 28.2358C14.9058 28.4683 16.0812 28.4683 16.8046 28.2358L20.925 26.8667C22.475 26.35 23.7408 24.5933 23.7408 22.9529V16.9596" stroke="#380F43" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M27.6417 19.375V11.625" stroke="#380F43" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>,
-            number:'100',
+            number:studentCount,
             doodle:<svg xmlns="http://www.w3.org/2000/svg" width="190" height="137" viewBox="0 0 190 137" fill="none">
             <path d="M-32 74.0311C-32 74.0311 -17.6431 72.5146 -8.57556 74.0311C0.491963 75.5476 4.2701 76.3059 10.3151 78.5807C16.3601 80.8555 22.4051 83.8885 22.4051 83.8885L32.9839 89.1964C32.9839 89.1964 42.8071 96.779 46.5852 101.329C50.3633 105.878 50.3633 108.911 54.1415 114.977C57.9196 121.043 63.209 126.351 63.209 126.351L76.8103 136.209L89.656 140L104.768 137.725L114.592 133.176L125.926 124.835L133.482 117.252L144.817 109.669L155.396 101.329L171.264 89.1964L185.621 78.5807L196.199 62.6572L203 42.9423V23.2275L185.621 14.1283C185.621 14.1283 173.531 10.337 166.73 10.337C159.929 10.337 156.907 9.57874 150.862 10.337C144.817 11.0953 136.108 14.1283 133.482 18.6779C130.857 23.2275 125.926 37.6345 125.926 37.6345C125.926 37.6345 122.148 49.0084 122.148 57.3493C122.148 65.6902 121.392 66.4485 122.148 74.0311C122.904 81.6137 122.904 79.3389 125.926 83.8885C128.949 88.4381 130.46 89.1964 133.482 92.2294C136.505 95.2625 144.817 101.329 144.817 101.329L158.418 114.977L171.264 124.835" stroke="#9A40B9" strokeOpacity="0.39" strokeWidth="20" strokeLinecap="round"/>
           </svg>
@@ -72,7 +112,7 @@ function Dashboard() {
             <path d="M10.0104 10.9662H7.10416" stroke="#12273F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M10.9792 14.8412H7.10416" stroke="#12273F" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>,
-            number:50,
+            number:courseCount,
             doodle:<svg xmlns="http://www.w3.org/2000/svg" width="190" height="132" viewBox="0 0 190 132" fill="none">
             <path d="M-15.7735 10.4109C-15.7735 10.4109 -2.58183 16.276 4.51261 22.1232C11.6071 27.9703 14.4999 30.516 18.5976 35.5085C22.6954 40.5011 26.414 46.1503 26.414 46.1503L32.9215 56.0364C32.9215 56.0364 37.6373 67.5147 38.6345 73.3438C39.6317 79.173 38.1151 81.7997 38.3541 88.9421C38.593 96.0846 40.5198 103.326 40.5198 103.326L47.3701 118.663L56.5991 128.37L70.8244 133.956L81.6063 134.927L95.5926 133.371L105.928 130.583L119.535 129.683L132.867 127.749L152.675 125.176L170.417 123.161L187.54 114.66L203.287 100.987L213.144 83.9137L202.643 67.3439C202.643 67.3439 194.068 58.0155 188.179 54.6152C182.289 51.2149 180.051 49.0469 174.436 46.6811C168.822 44.3153 159.763 42.5875 155.215 45.2148C150.666 47.8422 139.193 57.8536 139.193 57.8536C139.193 57.8536 130.234 65.8146 126.063 73.038C121.893 80.2615 120.859 80.5403 117.722 87.4849C114.586 94.4295 115.723 92.4594 116.066 97.9107C116.408 103.362 117.338 104.774 118.439 108.912C119.54 113.05 123.705 122.46 123.705 122.46L128.66 141.08L134.856 156.04" stroke="#2472BA" strokeOpacity="0.39" strokeWidth="20" strokeLinecap="round"/>
           </svg>
@@ -88,7 +128,7 @@ function Dashboard() {
             <path d="M27.9646 14.2083C25.73 15.8358 23.25 16.9725 20.6796 17.6183" stroke="#450A0E" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M3.38416 14.5571C5.54124 16.0296 7.89207 17.0758 10.3333 17.67" stroke="#450A0E" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>,
-            number:10,
+            number:sellCourseCount,
             doodle:<svg xmlns="http://www.w3.org/2000/svg" width="190" height="139" viewBox="0 0 190 139" fill="none">
             <path d="M-15.7162 175.885C-15.7162 175.885 -4.19097 167.191 4.36249 163.821C12.9159 160.451 16.545 159.155 22.8982 157.991C29.2514 156.828 35.9951 156.314 35.9951 156.314L47.7966 155.415C47.7966 155.415 60.122 156.856 65.7037 158.81C71.2854 160.763 72.8476 163.363 79.2104 166.617C85.5731 169.871 92.8408 171.696 92.8408 171.696L109.576 173.141L122.54 169.774L134.322 160.041L140.399 151.082L145.819 138.095L148.39 127.703L154.2 115.366L158.972 102.768L166.326 84.196L173.164 67.7022L174.031 48.6046L169.706 28.2031L159.552 11.3042L139.969 12.4558C139.969 12.4558 127.653 15.4328 121.824 18.9354C115.994 22.438 113.013 23.3447 108.222 27.1081C103.431 30.8715 97.5281 37.9568 97.6209 43.2087C97.7136 48.4607 100.907 63.3494 100.907 63.3494C100.907 63.3494 103.527 75.0447 107.823 82.1942C112.119 89.3438 111.861 90.3829 116.414 96.4933C120.967 102.604 119.796 100.654 124.73 102.997C129.664 105.34 131.35 105.212 135.503 106.255C139.656 107.298 149.905 108.217 149.905 108.217L168.593 112.911L184.681 114.744" stroke="#EE4551" strokeOpacity="0.39" strokeWidth="20" strokeLinecap="round"/>
           </svg>
@@ -101,12 +141,21 @@ function Dashboard() {
             <path d="M22.6042 9.85542V6.45834C22.6042 3.875 21.3125 2.58334 18.7292 2.58334H12.2708C9.6875 2.58334 8.39583 3.875 8.39583 6.45834V9.765" stroke="#380F43" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             <path d="M16.3137 14.1954L17.05 15.345C17.1662 15.5258 17.4246 15.7067 17.6183 15.7583L18.9358 16.0942C19.7496 16.3008 19.9692 16.9983 19.4396 17.6442L18.5742 18.6904C18.445 18.8583 18.3417 19.1554 18.3546 19.3621L18.4321 20.7183C18.4837 21.5579 17.8896 21.9842 17.1146 21.6742L15.8488 21.1704C15.655 21.0929 15.3321 21.0929 15.1383 21.1704L13.8725 21.6742C13.0975 21.9842 12.5033 21.545 12.555 20.7183L12.6325 19.3621C12.6454 19.1554 12.5421 18.8454 12.4129 18.6904L11.5475 17.6442C11.0179 16.9983 11.2375 16.3008 12.0512 16.0942L13.3688 15.7583C13.5754 15.7067 13.8337 15.5129 13.9371 15.345L14.6733 14.1954C15.1383 13.4979 15.8617 13.4979 16.3137 14.1954Z" stroke="#380F43" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>,
-            number:5,
+            number:gradeCount,
             doodle:<svg xmlns="http://www.w3.org/2000/svg" width="190" height="95" viewBox="0 0 190 95" fill="none">
             <path d="M187.742 10.5474C187.742 10.5474 176.067 19.0392 167.456 22.2596C158.845 25.4801 155.194 26.7125 148.822 27.7649C142.449 28.8174 135.697 29.2132 135.697 29.2132L123.882 29.9059C123.882 29.9059 111.584 28.2507 106.037 26.1997C100.49 24.1487 98.9736 21.522 92.6686 18.1577C86.3636 14.7934 79.1289 12.8413 79.1289 12.8413L62.4212 11.1052L49.4008 14.2447L37.4504 23.771L31.2181 32.6226L25.5726 45.5132L22.82 55.8581L16.7955 68.0921L11.8044 80.6049L4.1283 99.0458L-2.99731 115.418L-4.19704 134.497L-0.229152 154.971L9.62827 172.045L29.2289 171.235C29.2289 171.235 41.5948 168.473 47.4843 165.073C53.3739 161.673 56.3706 160.818 61.2266 157.139C66.0826 153.46 72.1083 146.479 72.1071 141.226C72.106 135.973 69.1728 121.031 69.1728 121.031C69.1728 121.031 66.7578 109.292 62.5873 102.068C58.4169 94.8448 58.6921 93.8103 54.2464 87.6214C49.8007 81.4324 50.9381 83.4025 46.0458 80.9737C41.1534 78.5449 39.4655 78.6439 35.3314 77.5284C31.1973 76.4129 20.9659 75.3155 20.9659 75.3155L2.36249 70.296L-13.6909 68.182" stroke="#9A40B9" strokeOpacity="0.39" strokeWidth="20" strokeLinecap="round"/>
           </svg>
         }
     ];
+    if(loading)
+    {
+      return(<div className="loader-container">
+        <div className="load-inside">
+        <p>Simz Music Academy</p>
+        <div className="loader"></div>
+        </div>
+      </div> );
+    }
   return (
     <div className='Dashboard'>
         <img className='Navbutton' src={NavButton} alt="" />
