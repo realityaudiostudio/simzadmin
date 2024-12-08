@@ -13,7 +13,7 @@ function AllStudents() {
     const[studentsData,setStudentsData] = useState([]);
     const [selectedTags, setSelectedTags] = React.useState([]);
     // const [filteredStudents, setFilteredStudents] = useState([]);
-    // const [searchText, setSearchText] = useState(""); 
+    const [searchText, setSearchText] = useState(""); 
     // Handle tag selection
     const handleChange = (tag, checked) => {
       const nextSelectedTags = checked
@@ -22,14 +22,39 @@ function AllStudents() {
       // console.log('You are interested in: ', nextSelectedTags);
       setSelectedTags(nextSelectedTags);
     };
+    const handleSearch = (e) =>
+    {
+      setSearchText(e.target.value);
+      
+    }
+    // const searchStudents = searchText.length
+    // ? studentsData.filter((student) =>
+    //   student.user.user_metadata.username.some((username) => searchText.includes(username))
+    //       )
+    //       : studentsData;
 
-    const filteredStudents = selectedTags.length
-        ? studentsData.filter((student) =>
-              student.courses.some((course) => selectedTags.includes(course))
-          )
-        : studentsData;
 
- 
+    // const filteredStudents = selectedTags.length
+    //     ? studentsData.filter((student) =>
+    //           student.courses.some((course) => selectedTags.includes(course))
+    //       )
+    //     : studentsData;
+
+    const combinedFilteredStudents = studentsData.filter((student) => {
+      // Check if the student matches the search text (if searchText is provided)
+      const matchesSearch = searchText.length
+          ? student.user?.user_metadata?.username.toLowerCase().includes(searchText.toLowerCase())
+          : true;  // If no search text, consider all students as a match
+  
+      // Check if the student matches the selected course tags (if selectedTags are selected)
+      const matchesCourses = selectedTags.length
+          ? student.courses.some((course) => selectedTags.includes(course))
+          : true;  // If no selected tags, consider all students as a match
+  
+      return matchesSearch && matchesCourses;  // Only include students who match both criteria
+  });
+
+    
 
     useEffect(()=>{
         const fetchStudents = async ()=>{
@@ -76,9 +101,9 @@ function AllStudents() {
         </div>
         <div className="stsearch">
             <label>Search Data
-                <Input size='10px' type='text'></Input>
+                <Input onChange={handleSearch} size='10px' type='text'></Input>
             </label>
-            <Button>Submit</Button>
+            {/* <Button onClick={handleSearch}>Submit</Button> */}
         </div>
         <div className="stfilter">
             <Flex gap={4} wrap align="center">
@@ -96,7 +121,7 @@ function AllStudents() {
         </div>
         <div className="sttemplate">
             {/*All about the template and here we should work for mapping */}
-            {filteredStudents.map((student, index) => (
+            {combinedFilteredStudents.map((student, index) => (
             <div key={index} className="stinduvidual">
                 <p>Since</p>
                 <h5>{student.user?.user_metadata?.username || 'Unknown'}</h5>
