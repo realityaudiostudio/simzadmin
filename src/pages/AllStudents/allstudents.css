@@ -1,6 +1,7 @@
 .sttemplate
 {
     border: 2px solid;
+    width: 500px;
 }
 .stinduvidual
 {
@@ -8,3 +9,35 @@
     margin:10px;
     width: 250px;
 }
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    width: 100%;   /* Full width */
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+.loaderAllST {
+    width: 50px;
+    --b: 8px;
+    aspect-ratio: 1; /* Ensures a square aspect ratio */
+    border-radius: 50%; /* Circular shape */
+    background: #514b82; /* Background color */
+    -webkit-mask:
+      repeating-conic-gradient(#0000 0deg, #000 1deg 70deg, #0000 71deg 90deg), /* Masking for the spinner effect */
+      radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b))); /* Inner circle masking */
+    -webkit-mask-composite: destination-in; /* Specifies how the mask should interact */
+    mask-composite: intersect; /* Intersect mask for proper masking behavior */
+    animation: l5 1s infinite; /* Animation for rotation */
+}
+
+@keyframes l5 {
+    to {
+        transform: rotate(.5turn); /* Rotates the element by half a turn (180deg) */
+    }
+}
+
