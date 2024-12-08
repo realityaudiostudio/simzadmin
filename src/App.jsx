@@ -6,6 +6,7 @@ import Syllabus from './pages/Syllabus/Syllabus';
 import Quiz from './pages/Quiz/Quiz';
 import Sheets from './pages/Sheets/Sheets';
 import Practice from './pages/Practice/Practice';
+import AllStudents from './pages/AllStudents/AllStudents';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Route path="/quiz" element={<Quiz/>} />
           <Route path="/sheets" element={<Sheets/>} />
           <Route path="/practice" element={<Practice/>} />
+          <Route path='/allstudents' element={<AllStudents/>}/>
       </Routes>
     </Router>
   )

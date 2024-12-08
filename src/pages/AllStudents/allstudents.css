@@ -1,0 +1,10 @@
+.sttemplate
+{
+    border: 2px solid;
+}
+.stinduvidual
+{
+    border: 1px dashed;
+    margin:10px;
+    width: 250px;
+}
