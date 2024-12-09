@@ -11,11 +11,15 @@ import Login from './pages/Login/Login';
 import { UserProvider } from './context/UserContext/UserContext';
 import ProtectedRoute from './context/Protected/ProtectedRoute';
 import StudentInd from './pages/StudentInd/StudentInd';
+import Attendance from './pages/Attendance/Attendance';
+import { StudentProvider } from './context/StudentContext/StudentContext';
+import Lessons from './pages/Lessons/Lessons';
 
 
 function App() {
   return (
     <UserProvider>
+      <StudentProvider>
     <Router>
       <Routes>
           <Route path="/" element={<Login />} />
@@ -26,8 +30,12 @@ function App() {
           <Route path='/allstudents' element={<ProtectedRoute><AllStudents/></ProtectedRoute>}/>
           <Route path='/dashboard' element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
           <Route path='/eachstudent/:id' element={<ProtectedRoute><StudentInd/></ProtectedRoute>}/>
+          <Route path='/attendance/:id' element={<ProtectedRoute><Attendance/></ProtectedRoute>}/>
+          <Route path='/lessons/:id' element={<ProtectedRoute><Lessons/></ProtectedRoute>}/>
+
       </Routes>
     </Router>
+    </StudentProvider>
     </UserProvider>
   )
 }
