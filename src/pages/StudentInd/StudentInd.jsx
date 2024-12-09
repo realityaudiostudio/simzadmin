@@ -87,7 +87,7 @@ function StudentInd() {
         </ul>
     </div>
         </div>
-        ) : (<p>Loading student data...</p>)}
+        ) : (<div className="loader-container"><div className='loaderAllSTI'></div></div>)}
         {/* <div className="stindhead">
         <h3>Alan Jose Santo</h3>
         <p>Keyboard Student</p>
