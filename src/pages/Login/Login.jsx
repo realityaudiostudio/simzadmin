@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext/UserContext';
+import { useEffect } from 'react';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -14,7 +15,7 @@ function Login() {
     const[email,setEmail] = useState('');
     const[password,setPassword] = useState('');
     const navigate = useNavigate();
-    const {login} = useUser();
+    const {user,login} = useUser();
     const [messageApi, contextHolder] = message.useMessage();
 
     function handleEmail(e)
@@ -26,6 +27,14 @@ function Login() {
         setPassword(e.target.value);
     }
 
+
+    useEffect(()=>
+    {
+      if(user)
+      {
+        navigate('/dashboard', { replace: true });
+      }
+    }, [user, navigate]);
 
     const handleLogin = async () => {
         const { data, error } = await supabase.auth.signInWithPassword({

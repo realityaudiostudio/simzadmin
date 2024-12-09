@@ -5,6 +5,7 @@ import { useUser } from '../../context/UserContext/UserContext';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { createClient } from "@supabase/supabase-js";
+import { useStudent } from '../../context/StudentContext/StudentContext';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -13,8 +14,10 @@ function StudentInd() {
     const { id } = useParams();
     const [studentInd,setStudentInd] = useState(null);
     const {user} = useUser();
+    const {students,studentOnly} = useStudent();
     const navigate = useNavigate();
     useEffect(() => {
+        
         if (!user) {
             navigate('/');
         }
@@ -47,15 +50,31 @@ function StudentInd() {
                 // Add user details to the student object
                 const combinedData = { ...studentDetails, user: userDetails };
     
+                // Ensure attendance_details is an array
+                const attendance = Array.isArray(combinedData.attendance_details?.data)
+    ? combinedData.attendance_details.data.map(record => ({
+        attDate: new Date(parseInt(record.date) * 1000).toLocaleDateString(),
+        attStatus: record.is_present ? "Present" : record.is_absent ? "Absent" : "Unknown",
+    }))
+    : []; // Default to an empty array if `attendance_details.data` is not an array
+
+    // console.log("Combined Data:", combinedData);
+    
+                // Use prev_learn field for lessons
+                const lessons = combinedData.prev_learn || [];
+    
                 // Set state
                 setStudentInd(combinedData);
+                studentOnly(attendance, lessons);
+                // console.log("Setting Data",attendance,lessons);
             } catch (error) {
                 console.error('Unexpected error:', error);
             }
         };
     
         fetchData();
-    }, [id]);
+    }, [id, user, studentOnly, navigate]);
+    
     
 
   return (
@@ -67,8 +86,8 @@ function StudentInd() {
     <p>{Array.isArray(studentInd.courses) 
               ? studentInd.courses.join(', ') 
               : 'No courses available'} Student</p>
-    <Link to='/attendance'>Attendance </Link>
-    <Link to='/lessons'>Lessons</Link>
+    <Link to={`/attendance/${studentInd.user_id}`}>Attendance </Link>
+    <Link to={`/lessons/${studentInd.user_id}`}>Lessons</Link>
     <p>Grade Covered : {studentInd.lessons}</p>
     <p>Fee due : Rs.{studentInd.fee_due}</p>
     </div>
