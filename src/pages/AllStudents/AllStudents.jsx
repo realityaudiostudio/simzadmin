@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Flex, Tag , Input , Button } from 'antd';
 import { useUser } from '../../context/UserContext/UserContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 const tagsData = ['Guitar', 'Keyboard', 'Drums', 'Vocals'];
@@ -139,10 +139,11 @@ function AllStudents() {
         {loading ? (<div className="loader-container"><div className='loaderAllST'></div></div>) : (
           <div className="sttemplate">
           {/*All about the template and here we should work for mapping */}
-          {combinedFilteredStudents.map((student, index) => (
-          <div key={index} className="stinduvidual">
+          {combinedFilteredStudents.map((student) => (
+          <div key={student.user_id} className="stinduvidual">
               <p>Since {student.year_adm}</p>
-              <h5>{student.user?.user_metadata?.username || 'Unknown'}</h5>
+              {/* <h5>{student.user?.user_metadata?.username || 'Unknown'}</h5> */}
+              <Link to={`/eachstudent/${student.user_id}`}>{student.user?.user_metadata?.username || 'Unknown'}</Link>
               <p>{Array.isArray(student.courses) 
                   ? student.courses.join(', ') 
                   : 'No courses available'} Student</p>

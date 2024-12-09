@@ -10,6 +10,7 @@ import AllStudents from './pages/AllStudents/AllStudents';
 import Login from './pages/Login/Login';
 import { UserProvider } from './context/UserContext/UserContext';
 import ProtectedRoute from './context/Protected/ProtectedRoute';
+import StudentInd from './pages/StudentInd/StudentInd';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/practice" element={<Practice/>} />
           <Route path='/allstudents' element={<ProtectedRoute><AllStudents/></ProtectedRoute>}/>
           <Route path='/dashboard' element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
+          <Route path='/eachstudent/:id' element={<ProtectedRoute><StudentInd/></ProtectedRoute>}/>
       </Routes>
     </Router>
     </UserProvider>
