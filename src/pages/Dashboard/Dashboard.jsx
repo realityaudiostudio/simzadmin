@@ -7,6 +7,10 @@ import Footer from '../../components/Footer/Footer';
 import Sections from '../../components/Sections/Sections';
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { useUser } from '../../context/UserContext/UserContext';
+import { Link,useLocation,useNavigate } from 'react-router-dom';
+import { Button,message,Spin } from 'antd';
+import Loading from '../../components/Loading/Loading';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -19,8 +23,28 @@ const [sellCourseCount,setSellCourseCount] = useState(0);
 const [gradeCount,setGradeCount] = useState(0);
 const [loading,setLoading] = useState(true);
 
+const {user,logout} = useUser();
+const location = useLocation();
+const navigate = useNavigate();
+const [messageApi, contextHolder] = message.useMessage();
+
+function handleLogout ()
+{
+  message.success("Logged Out!");
+  logout();
+  navigate('/');
+}
+
+
 useEffect(()=>{
+
+  if(!user)
+    {
+      navigate('/');
+    }
+  
   getDetailsCount();
+
 },[]);
 
 async function getDetailsCount() {
@@ -149,17 +173,22 @@ async function getDetailsCount() {
     ];
     if(loading)
     {
-      return(<div className="loader-container">
+      return(
+      <div className="loader-container">
         <div className="load-inside">
         <p>Simz Music Academy</p>
         <div className="loader"></div>
         </div>
-      </div> );
+       
+      </div> 
+      );
     }
   return (
     <div className='Dashboard'>
         <img className='Navbutton' src={NavButton} alt="" />
-        <h2 className='Message'>👋 Welcome in , Simjo V Geroge</h2>
+        <h2 className='Message'>👋 Welcome in , {user.email}</h2>
+        <Link to='/allstudents'>all</Link>
+        <Button onClick={handleLogout}>Logout</Button>
         <h1 className='Title'>Dashboard</h1>
         <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>
         <div className='Cards'>
