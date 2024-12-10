@@ -93,11 +93,11 @@ function StudentInd() {
         e.preventDefault();
     
         // Ensure fee_due is stored as a number
-        const feeDue = Number(studentInd.fee_due);
+        // const feeDue = Number(studentInd.fee_due);
     
         // Log the form data before submitting to the database
         console.log("Form Data to Update:", formData);
-        console.log("Current Lessons Array:", studentInd.lessons);
+        // console.log("Current Lessons Array:", studentInd.lessons);
         console.log("Current Fee Due:", studentInd.fee_due);
     
         // Update the username if necessary
@@ -114,22 +114,22 @@ function StudentInd() {
         }
     
         // Update the fee_due and lessons
-        const updatedLessons = studentInd.lessons.length > 0 
-            ? [...studentInd.lessons.slice(0, studentInd.lessons.length - 1), formData.lessons] 
-            : [formData.lessons];  // Add new lesson if no lessons exist
+        // const updatedLessons = studentInd.lessons.length > 0 
+        //     ? [...studentInd.lessons.slice(0, studentInd.lessons.length - 1), formData.lessons] 
+        //     : [formData.lessons];  // Add new lesson if no lessons exist
     
         // Log the updated lessons and fee_due before database update
-        console.log("Updated Lessons Array:", updatedLessons);
-        console.log("Updated Fee Due:", feeDue);
+        // console.log("Updated Lessons Array:", updatedLessons);
+       
     
         // Update student details in the database for fee_due and lessons only
         const { data: stBakki, error: errBakki } = await supabase
     .from("student_details")
     .update({
-        fee_due: feeDue,
+        fee_due: formData.fee_due,
         grade_completed: formData.grade_completed,
     })
-    .eq("user_id", studentInd.user_id);
+    .eq('user_id', studentInd.user_id);
     
         if (errBakki) {
             console.error("Error updating student details:", errBakki);
@@ -142,12 +142,13 @@ function StudentInd() {
     
         setStudentInd((prevState) => ({
             ...prevState,  // Retain previous state values
-            fee_due: feeDue,  // Update fee_due in state as a number
+            fee_due: formData.fee_due,  // Update fee_due in state as a number
             grade_completed:formData.grade_completed,  // Update lessons in state
         }));
     
         // Log the updated state after setting it
         console.log("Updated State After Form Submit:", studentInd);
+        console.log("Updated Fee Due:", formData.fee_due);
     
         setIsEditing(false);  // Stop editing after successful save
     };
