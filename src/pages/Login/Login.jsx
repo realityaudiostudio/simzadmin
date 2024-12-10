@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext/UserContext';
 import { useEffect } from 'react';
+import  loginimg from '../../assets/loginimg.svg';
+import  eyelash from '../../assets/eyelash.svg';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -61,11 +63,19 @@ function Login() {
     
     <div>
         {contextHolder}
+        
         <div className="stLogHead">
-            <h3 className='logname'>Simz Admin Login</h3>
-            <Input onChange={handleEmail} style={{width:"400px",margin:"10px"}} type='email' placeholder='Enter Email'></Input>
-            <Input onChange={handlePassword} type='password' style={{width:"400px",margin:"10px"}} placeholder='Enter Password'></Input>
-            <Button onClick={handleLogin} style={{width:"100px"}}>Login</Button>
+            <img className='loginimg' src={loginimg} alt="" />
+            <h3 className='logname'>LOGIN</h3>
+            <h2 className='loginSubt'>Email Address</h2>
+            <Input className='loginInput' onChange={handleEmail} style={{width:"400px",margin:"10px"}} type='email' placeholder='Enter Email'></Input>
+            <h2 className='loginSubt'>Password</h2>
+            <div class="password-input-container">
+              <Input className='loginInput' onChange={handlePassword} type='password' style={{width:"400px",margin:"10px"}} placeholder='Enter Password '></Input>
+              <button className="eyelash-button" id="togglePassword"><img className='eyelash' src={eyelash} alt="" /></button>
+            </div>
+           
+            <Button className='loginButton' onClick={handleLogin}>Login</Button>
         </div>
     </div>
   )
