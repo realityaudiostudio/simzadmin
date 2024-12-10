@@ -7,18 +7,23 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../../context/UserContext/UserContext';
 import { useEffect } from 'react';
 import  loginimg from '../../assets/loginimg.svg';
-import  eyelash from '../../assets/eyelash.svg';
+import  EyeSlashIcon from '../../assets/eyelash.svg';
+import  EyeIcon from '../../assets/eyelashopen.svg';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
 
 function Login() {
-
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const[email,setEmail] = useState('');
     const[password,setPassword] = useState('');
     const navigate = useNavigate();
     const {user,login} = useUser();
     const [messageApi, contextHolder] = message.useMessage();
+
+    const togglePasswordVisibility = () => {
+      setIsPasswordVisible(prevState => !prevState);
+    };
 
     function handleEmail(e)
     {
@@ -71,8 +76,14 @@ function Login() {
             <Input className='loginInput' onChange={handleEmail} style={{width:"400px",margin:"10px"}} type='email' placeholder='Enter Email'></Input>
             <h2 className='loginSubt'>Password</h2>
             <div class="password-input-container">
-              <Input className='loginInput' onChange={handlePassword} type='password' style={{width:"400px",margin:"10px"}} placeholder='Enter Password '></Input>
-              <button className="eyelash-button" id="togglePassword"><img className='eyelash' src={eyelash} alt="" /></button>
+              <Input className='loginInput' onChange={handlePassword} type={isPasswordVisible ? 'text' : 'password'} style={{width:"400px",margin:"10px"}} placeholder='Enter Password '></Input>
+              <button onClick={togglePasswordVisibility} className="eyelash-button" id="togglePassword" >
+              {isPasswordVisible ? (
+                  <img  src={EyeSlashIcon} />
+                ) : (
+                  <img  src={EyeIcon}/>
+                )}
+              </button>
             </div>
            
             <Button className='loginButton' onClick={handleLogin}>Login</Button>

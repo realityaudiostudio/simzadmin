@@ -90,10 +90,12 @@
 }
 
 .eyelash-button{
+    cursor: pointer;
     position: absolute;
     right:20px;
     border: none;
     background: transparent;
-    top: 50%; transform: translateY(-50%)
-    
+    top: 50%; transform: translateY(-50%);
+    padding-top:4px;
 }
+
