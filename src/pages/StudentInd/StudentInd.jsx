@@ -6,6 +6,8 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { createClient } from "@supabase/supabase-js";
 import { useStudent } from '../../context/StudentContext/StudentContext';
+import { EditOutlined } from '@ant-design/icons';
+import { Button, Input } from 'antd';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -15,6 +17,8 @@ function StudentInd() {
     const [studentInd,setStudentInd] = useState(null);
     const {user} = useUser();
     const {students,studentOnly} = useStudent();
+    const [isEditing,setIsEditing] = useState(false);
+    const [formData ,setFormData] = useState({});
     const navigate = useNavigate();
     useEffect(() => {
         
@@ -73,7 +77,91 @@ function StudentInd() {
         };
     
         fetchData();
-    }, [id, user, studentOnly, navigate]);
+    }, [id, user, studentOnly, navigate,studentInd]);
+
+    const handleEdit = () => {
+        setFormData({
+            username: studentInd.user?.user_metadata?.username || "",
+            fee_due: studentInd.fee_due || "",
+            grade_completed: studentInd.grade_completed || "",
+        });
+        // console.log(formData.fee_due);
+        setIsEditing(true);
+    }
+    
+    const handleForm = async (e) => {
+        e.preventDefault();
+    
+        // Ensure fee_due is stored as a number
+        // const feeDue = Number(studentInd.fee_due);
+    
+        // Log the form data before submitting to the database
+        console.log("Form Data to Update:", formData);
+        // console.log("Current Lessons Array:", studentInd.lessons);
+        console.log("Current Fee Due:", studentInd.fee_due);
+    
+        // Update the username if necessary
+        const { data: stUsername, error: stError } = await supabase.auth.admin.updateUserById(studentInd.user_id, {
+            user_metadata: {
+                ...studentInd.user.user_metadata,  // Retain existing metadata
+                username: formData.username || studentInd.user.user_metadata.username,  // Only update if provided
+            },
+        });
+    
+        if (stError) {
+            console.error("Error updating username:", stError);
+            return;
+        }
+    
+        // Update the fee_due and lessons
+        // const updatedLessons = studentInd.lessons.length > 0 
+        //     ? [...studentInd.lessons.slice(0, studentInd.lessons.length - 1), formData.lessons] 
+        //     : [formData.lessons];  // Add new lesson if no lessons exist
+    
+        // Log the updated lessons and fee_due before database update
+        // console.log("Updated Lessons Array:", updatedLessons);
+       
+    
+        // Update student details in the database for fee_due and lessons only
+        const { data: stBakki, error: errBakki } = await supabase
+    .from("student_details")
+    .update({
+        fee_due: formData.fee_due,
+        grade_completed: formData.grade_completed,
+    })
+    .eq('user_id', studentInd.user_id);
+    
+        if (errBakki) {
+            console.error("Error updating student details:", errBakki);
+            return;
+        }
+    
+        // After successful database update, update local state
+        console.log("Whats happening",stBakki);
+        console.log("Updating state with new data");
+    
+        setStudentInd((prevState) => ({
+            ...prevState,  // Retain previous state values
+            fee_due: formData.fee_due,  // Update fee_due in state as a number
+            grade_completed:formData.grade_completed,  // Update lessons in state
+        }));
+    
+        // Log the updated state after setting it
+        console.log("Updated State After Form Submit:", studentInd);
+        console.log("Updated Fee Due:", formData.fee_due);
+    
+        setIsEditing(false);  // Stop editing after successful save
+    };
+    
+
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,  // Update the respective field (username, fee_due, lessons)
+        }));
+    };
     
     
 
@@ -88,8 +176,9 @@ function StudentInd() {
               : 'No courses available'} Student</p>
     <Link to={`/attendance/${studentInd.user_id}`}>Attendance </Link>
     <Link to={`/lessons/${studentInd.user_id}`}>Lessons</Link>
-    <p>Grade Covered : {studentInd.lessons}</p>
+    <p>Grade Covered : {studentInd.grade_completed}</p>
     <p>Fee due : Rs.{studentInd.fee_due}</p>
+    <EditOutlined onClick={handleEdit} />
     </div>
     <div className="stindbadge">
         <h5>Badges Gained</h5>
@@ -129,7 +218,17 @@ function StudentInd() {
                 <li>1</li>
             </ul>
         </div> */}
+        {/* editing space */}
 
+        {isEditing && (
+            <div className="editingspace">
+                <Input name="username" type='text' onChange={handleInputChange} placeholder='Update Name' value={formData.username || ""}></Input>
+                <Input name="fee_due" type='text' onChange={handleInputChange} placeholder='Enter Fee Due' value={formData.fee_due || ""} ></Input>
+                <Input name="grade_completed" type='text' onChange={handleInputChange} placeholder='Enter GRade' value={formData.grade_completed}></Input>
+                <Button onClick={handleForm}>Save   </Button>
+            </div>
+        ) }
+        {/* Editing space end */}
     </div>
   )
 }
