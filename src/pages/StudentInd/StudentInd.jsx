@@ -84,6 +84,7 @@ function StudentInd() {
             username: studentInd.user?.user_metadata?.username || "",
             fee_due: studentInd.fee_due || "",
             grade_completed: studentInd.grade_completed || "",
+            courses: studentInd.courses.join(',') || "",
         });
         // console.log(formData.fee_due);
         setIsEditing(true);
@@ -128,6 +129,7 @@ function StudentInd() {
     .update({
         fee_due: formData.fee_due,
         grade_completed: formData.grade_completed,
+        courses:formData.courses,
     })
     .eq('user_id', studentInd.user_id);
     
@@ -143,7 +145,9 @@ function StudentInd() {
         setStudentInd((prevState) => ({
             ...prevState,  // Retain previous state values
             fee_due: formData.fee_due,  // Update fee_due in state as a number
-            grade_completed:formData.grade_completed,  // Update lessons in state
+            grade_completed:formData.grade_completed,
+            courses:formData.courses,
+            // Update lessons in state
         }));
     
         // Log the updated state after setting it
@@ -159,7 +163,7 @@ function StudentInd() {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value,  // Update the respective field (username, fee_due, lessons)
+            [name]: name === "courses" ? value.split(',') : value,  // Update the respective field (username, fee_due, lessons)
         }));
     };
     
@@ -225,6 +229,7 @@ function StudentInd() {
                 <Input name="username" type='text' onChange={handleInputChange} placeholder='Update Name' value={formData.username || ""}></Input>
                 <Input name="fee_due" type='text' onChange={handleInputChange} placeholder='Enter Fee Due' value={formData.fee_due || ""} ></Input>
                 <Input name="grade_completed" type='text' onChange={handleInputChange} placeholder='Enter GRade' value={formData.grade_completed}></Input>
+                <Input name="courses" type='text' onChange={handleInputChange} placeholder='Enrolled Courses' value={(formData.courses || []).join(',')}></Input>
                 <Button onClick={handleForm}>Save   </Button>
             </div>
         ) }
