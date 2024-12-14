@@ -1,11 +1,8 @@
 .footer{
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    padding-bottom: 48px;
-    top: 980px;
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    
+    align-items: center;
 }
 
 .version-dev{

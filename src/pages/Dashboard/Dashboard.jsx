@@ -11,6 +11,7 @@ import { useUser } from '../../context/UserContext/UserContext';
 import { Link,useLocation,useNavigate } from 'react-router-dom';
 import { Button,message,Spin } from 'antd';
 import Loading from '../../components/Loading/Loading';
+import SidePanel from '../../components/SidePanel/SidePanel';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -27,6 +28,11 @@ const {user,logout} = useUser();
 const location = useLocation();
 const navigate = useNavigate();
 const [messageApi, contextHolder] = message.useMessage();
+const [isPanelVisible, setIsPanelVisible] = useState(false);
+
+const togglePanel = () => {
+  setIsPanelVisible(!isPanelVisible);
+};
 
 function handleLogout ()
 {
@@ -185,12 +191,19 @@ async function getDetailsCount() {
     }
   return (
     <div className='Dashboard'>
-        <img className='Navbutton' src={NavButton} alt="" />
-        <h2 className='Message'>👋 Welcome in , {user.email}</h2>
-        <Link to='/allstudents'>all</Link>
-        <Button onClick={handleLogout}>Logout</Button>
-        <h1 className='Title'>Dashboard</h1>
-        <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>
+        <div className='navLog'>
+          <img className='Navbutton' src={NavButton} alt="" onClick={togglePanel} />
+          <Button className='logoutBt' onClick={handleLogout}>Logout</Button>
+        </div>
+        <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} />
+        <div className='MessageSearch'>
+            <div className='MessageTitle'>
+              <h2 className='Message'>👋 Welcome in , {user.email}</h2>
+              <h1 className='Title'>Dashboard</h1>
+            </div>
+            <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>
+        </div>
+
         <div className='Cards'>
             {content.map((con , i)=>(
                 <Cards  key={i}
@@ -214,11 +227,8 @@ async function getDetailsCount() {
               />
             ))}
             </div>
-
         </div>
-        
         <Footer/>
-       
     </div>
   )
 }
