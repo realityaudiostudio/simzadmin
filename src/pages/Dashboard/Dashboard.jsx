@@ -11,6 +11,7 @@ import { useUser } from '../../context/UserContext/UserContext';
 import { Link,useLocation,useNavigate } from 'react-router-dom';
 import { Button,message,Spin } from 'antd';
 import Loading from '../../components/Loading/Loading';
+import SidePanel from '../../components/SidePanel/SidePanel';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -27,6 +28,11 @@ const {user,logout} = useUser();
 const location = useLocation();
 const navigate = useNavigate();
 const [messageApi, contextHolder] = message.useMessage();
+const [isPanelVisible, setIsPanelVisible] = useState(false);
+
+const togglePanel = () => {
+  setIsPanelVisible(!isPanelVisible);
+};
 
 function handleLogout ()
 {
@@ -185,7 +191,8 @@ async function getDetailsCount() {
     }
   return (
     <div className='Dashboard'>
-        <img className='Navbutton' src={NavButton} alt="" />
+        <img className='Navbutton' src={NavButton} alt="" onClick={togglePanel} />
+        <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} />
         <h2 className='Message'>👋 Welcome in , {user.email}</h2>
         <Link to='/allstudents'>all</Link>
         <Button onClick={handleLogout}>Logout</Button>
