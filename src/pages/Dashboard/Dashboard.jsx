@@ -191,11 +191,12 @@ async function getDetailsCount() {
     }
   return (
     <div className='Dashboard'>
-        <img className='Navbutton' src={NavButton} alt="" onClick={togglePanel} />
+        <div>
+          <img className='Navbutton' src={NavButton} alt="" onClick={togglePanel} />
+          <Button onClick={handleLogout}>Logout</Button>
+        </div>
         <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} />
         <h2 className='Message'>👋 Welcome in , {user.email}</h2>
-        <Link to='/allstudents'>all</Link>
-        <Button onClick={handleLogout}>Logout</Button>
         <h1 className='Title'>Dashboard</h1>
         <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>
         <div className='Cards'>
