@@ -84,59 +84,61 @@ function StudentInd() {
             username: studentInd.user?.user_metadata?.username || "",
             fee_due: studentInd.fee_due || "",
             grade_completed: studentInd.grade_completed || "",
-            courses: studentInd.courses.join(',') || "",
+            courses: studentInd.courses ? studentInd.courses.join(', ') : "", // Convert array to string
         });
-        // console.log(formData.fee_due);
         setIsEditing(true);
-    }
+    };
+    
     
     const handleForm = async (e) => {
         e.preventDefault();
     
-        // Ensure that courses is always an array (even if not edited)
-        const updatedCourses = formData.courses ? formData.courses.split(',').map(course => course.trim()) : studentInd.courses;
+        // Convert `courses` back to an array before saving
+        const updatedCourses = formData.courses.split(',').map(course => course.trim());
     
-        console.log("Form Data to Update:", formData);
-        console.log("Current Fee Due:", studentInd.fee_due);
+        try {
+            // Update the user metadata
+            const { error: stError } = await supabase.auth.admin.updateUserById(studentInd.user_id, {
+                user_metadata: {
+                    ...studentInd.user.user_metadata,
+                    username: formData.username || studentInd.user.user_metadata.username,
+                },
+            });
     
-        // Update the username if necessary
-        const { data: stUsername, error: stError } = await supabase.auth.admin.updateUserById(studentInd.user_id, {
-            user_metadata: {
-                ...studentInd.user.user_metadata,  // Retain existing metadata
-                username: formData.username || studentInd.user.user_metadata.username,  // Only update if provided
-            },
-        });
+            if (stError) {
+                console.error("Error updating username:", stError);
+                return;
+            }
     
-        if (stError) {
-            console.error("Error updating username:", stError);
-            return;
-        }
+            // Update student details in the database
+            const { error: errBakki } = await supabase
+                .from("student_details")
+                .update({
+                    fee_due: formData.fee_due,
+                    grade_completed: formData.grade_completed,
+                    courses: updatedCourses, // Save as an array
+                })
+                .eq('user_id', studentInd.user_id);
     
-        // Update student details in the database for fee_due, grade_completed, and courses
-        const { data: stBakki, error: errBakki } = await supabase
-            .from("student_details")
-            .update({
+            if (errBakki) {
+                console.error("Error updating student details:", errBakki);
+                return;
+            }
+    
+            // Update local state after a successful save
+            setStudentInd((prevState) => ({
+                ...prevState,
                 fee_due: formData.fee_due,
                 grade_completed: formData.grade_completed,
-                courses: updatedCourses,  // Always treat courses as an array
-            })
-            .eq('user_id', studentInd.user_id);
+                courses: updatedCourses, // Update local state with array
+            }));
     
-        if (errBakki) {
-            console.error("Error updating student details:", errBakki);
-            return;
+            setIsEditing(false); // Exit editing mode
+        } catch (error) {
+            console.error("Unexpected error:", error);
         }
-    
-        // After successful database update, update local state
-        setStudentInd((prevState) => ({
-            ...prevState,  // Retain previous state values
-            fee_due: formData.fee_due,  // Update fee_due in state as a number
-            grade_completed: formData.grade_completed,
-            courses: updatedCourses,  // Ensure courses is updated correctly
-        }));
-    
-        setIsEditing(false);  // Stop editing after successful save
     };
+    
     
     
 
@@ -145,9 +147,10 @@ function StudentInd() {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: name === "courses" ? value.split(',').map(course => course.trim()) : value,  // Ensure courses is an array of trimmed strings
+            [name]: value, // Keep `courses` as a string during editing
         }));
     };
+    
     
     
     
@@ -208,14 +211,15 @@ function StudentInd() {
         {/* editing space */}
 
         {isEditing && (
-            <div className="editingspace">
-                <Input name="username" type='text' onChange={handleInputChange} placeholder='Update Name' value={formData.username || ""}></Input>
-                <Input name="fee_due" type='text' onChange={handleInputChange} placeholder='Enter Fee Due' value={formData.fee_due || ""} ></Input>
-                <Input name="grade_completed" type='text' onChange={handleInputChange} placeholder='Enter GRade' value={formData.grade_completed}></Input>
-                <Input name="courses" type='text' onChange={handleInputChange} placeholder='Enrolled Courses' value={(formData.courses)}></Input>
-                <Button onClick={handleForm}>Save   </Button>
-            </div>
-        ) }
+    <div className="editingspace">
+        <Input name="username" type="text" onChange={handleInputChange} placeholder="Update Name" value={formData.username || ""} />
+        <Input name="fee_due" type="text" onChange={handleInputChange} placeholder="Enter Fee Due" value={formData.fee_due || ""} />
+        <Input name="grade_completed" type="text" onChange={handleInputChange} placeholder="Enter Grade" value={formData.grade_completed || ""} />
+        <Input name="courses" type="text" onChange={handleInputChange} placeholder="Enrolled Courses" value={formData.courses || ""} />
+        <Button onClick={handleForm}>Save</Button>
+    </div>
+)}
+
         {/* Editing space end */}
     </div>
   )
