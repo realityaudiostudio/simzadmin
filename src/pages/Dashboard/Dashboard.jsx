@@ -191,14 +191,19 @@ async function getDetailsCount() {
     }
   return (
     <div className='Dashboard'>
-        <div>
+        <div className='navLog'>
           <img className='Navbutton' src={NavButton} alt="" onClick={togglePanel} />
-          <Button onClick={handleLogout}>Logout</Button>
+          <Button className='logoutBt' onClick={handleLogout}>Logout</Button>
         </div>
         <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} />
-        <h2 className='Message'>👋 Welcome in , {user.email}</h2>
-        <h1 className='Title'>Dashboard</h1>
-        <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>
+        <div className='MessageSearch'>
+            <div className='MessageTitle'>
+              <h2 className='Message'>👋 Welcome in , {user.email}</h2>
+              <h1 className='Title'>Dashboard</h1>
+            </div>
+            <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>
+        </div>
+
         <div className='Cards'>
             {content.map((con , i)=>(
                 <Cards  key={i}
@@ -222,11 +227,8 @@ async function getDetailsCount() {
               />
             ))}
             </div>
-
         </div>
-        
         <Footer/>
-       
     </div>
   )
 }

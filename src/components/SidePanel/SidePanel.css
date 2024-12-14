@@ -1,12 +1,12 @@
-/* Side Panel Styling */
+
 .side-panel {
     position: fixed;
     display: flex;
     flex-direction: column;
     top: 0;
-    left: -260px; /* Hidden by default, off-screen */
+    left: -260px;
     width: 260px;
-    height: 95%;
+    height: 100vh;
     color: white;
     transition: left 0.3s ease;
     padding-top: 60px;
@@ -51,12 +51,8 @@
     top: 10px;
     right: 10px;
     background-color: transparent;
-    color: white;
     border: none;
-    font-size: 20px;
-    cursor: pointer;
   }
-
   .logo
   {
     align-self: center;
