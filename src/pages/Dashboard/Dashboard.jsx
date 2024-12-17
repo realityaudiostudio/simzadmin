@@ -196,6 +196,7 @@ async function getDetailsCount() {
           <NavigationButton />
           <Button className='logoutBt' onClick={handleLogout}>Logout</Button>
         </div>
+        {/* <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} /> */}
         <div className='MessageSearch'>
             <div className='MessageTitle'>
               <h2 className='Message'>👋 Welcome in , {user.email}</h2>
