@@ -14,7 +14,10 @@ import StudentInd from './pages/StudentInd/StudentInd';
 import Attendance from './pages/Attendance/Attendance';
 import { StudentProvider } from './context/StudentContext/StudentContext';
 import Lessons from './pages/Lessons/Lessons';
-import { useState } from 'react';
+
+import AllAttendance from './pages/AllAttendance/AllAttendance';
+import {useState} from 'react'
+
 
 
 
@@ -29,6 +32,7 @@ function App() {
           <Route path="/quiz" element={<Quiz/>} />
           <Route path="/sheets" element={<Sheets/>} />
           <Route path="/practice" element={<Practice/>} />
+          <Route path="/allattendance" element={<AllAttendance/>} />
           <Route path='/allstudents' element={<ProtectedRoute><AllStudents/></ProtectedRoute>}/>
           <Route path='/dashboard' element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
           <Route path='/eachstudent/:id' element={<ProtectedRoute><StudentInd/></ProtectedRoute>}/>
