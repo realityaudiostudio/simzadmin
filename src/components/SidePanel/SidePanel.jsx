@@ -4,6 +4,7 @@ import logo from '../../assets/simz.png';
 import backbutton from '../../assets/NavArrow.svg'
 import { Link,useLocation,useNavigate } from 'react-router-dom';
 
+
 const SidePanel = ({ isVisible, togglePanel }) => {
   return (
     <div className={`side-panel ${isVisible ? 'visible' : ''}`}>
