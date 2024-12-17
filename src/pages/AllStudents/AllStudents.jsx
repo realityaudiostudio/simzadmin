@@ -111,6 +111,7 @@ function AllStudents() {
         <p>Welcome {user?.email || 'Guest'}</p>
             <h2>Student Data</h2>
         </div>
+        
         <div className="stsearch">
             <label>Search Data
                 <Input style={{margin:"10px" , width : "250px",height : "40px"}} onChange={handleSearch} size='10px' type='text'></Input>
