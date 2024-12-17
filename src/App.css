@@ -1,7 +1,12 @@
 body{
     border-radius: 10px;
     background: #FBF6FD;
-    width: auto;
-    height: 100%;
+    width: 100vw;
+    height: 100vw;
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    margin: 0px;
+
 }
 

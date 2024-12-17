@@ -12,6 +12,7 @@ import { Link,useLocation,useNavigate } from 'react-router-dom';
 import { Button,message,Spin } from 'antd';
 import Loading from '../../components/Loading/Loading';
 import SidePanel from '../../components/SidePanel/SidePanel';
+import NavigationButton from '../../components/NavigationButton/NavigationButton';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -192,10 +193,9 @@ async function getDetailsCount() {
   return (
     <div className='Dashboard'>
         <div className='navLog'>
-          <img className='Navbutton' src={NavButton} alt="" onClick={togglePanel} />
+          <NavigationButton />
           <Button className='logoutBt' onClick={handleLogout}>Logout</Button>
         </div>
-        <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} />
         <div className='MessageSearch'>
             <div className='MessageTitle'>
               <h2 className='Message'>👋 Welcome in , {user.email}</h2>

@@ -14,6 +14,8 @@ import StudentInd from './pages/StudentInd/StudentInd';
 import Attendance from './pages/Attendance/Attendance';
 import { StudentProvider } from './context/StudentContext/StudentContext';
 import Lessons from './pages/Lessons/Lessons';
+import { useState } from 'react';
+
 
 
 function App() {
