@@ -9,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import NavigationButton from '../../components/NavigationButton/NavigationButton';
 import studentAvatar from  '../../assets/studentAvatar.svg';
 import Footer from '../../components/Footer/Footer';
+import searchicon from '../../assets/searchicon.svg'
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 const tagsData = ['Guitar', 'Keyboard', 'Drums', 'Vocals'];
@@ -118,9 +119,11 @@ function AllStudents() {
             <h2>Student Data</h2>
         </div>
         
-        <div >
+        <div className='serachBarContainer' >
+            <img src={searchicon} className='searchIcon' alt="" />
             <label >
-                <Input className="stsearch" onChange={handleSearch} size='10px' type='text' placeholder='Search Students'></Input>
+            
+            <Input className="stsearch" onChange={handleSearch} size='10px' type='text' placeholder='Search Students'></Input>
             </label>
             {/* <Button onClick={handleSearch}>Submit</Button> */}
         </div>
