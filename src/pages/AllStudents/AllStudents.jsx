@@ -6,6 +6,9 @@ import { useEffect } from 'react';
 import { Flex, Tag , Input , Button } from 'antd';
 import { useUser } from '../../context/UserContext/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
+import NavigationButton from '../../components/NavigationButton/NavigationButton';
+import studentAvatar from  '../../assets/studentAvatar.svg';
+import Footer from '../../components/Footer/Footer';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 const tagsData = ['Guitar', 'Keyboard', 'Drums', 'Vocals'];
@@ -106,20 +109,23 @@ function AllStudents() {
     
 
   return (
-    <div>
+    <div className='allStudent'>
+        <div className='navButton'>
+        <NavigationButton/>
+        </div>
         <div className="sthead">
-        <p>Welcome {user?.email || 'Guest'}</p>
+        <p>👋 Welcome {user?.email || 'Guest'}</p>
             <h2>Student Data</h2>
         </div>
         
-        <div className="stsearch">
-            <label>Search Data
-                <Input style={{margin:"10px" , width : "250px",height : "40px"}} onChange={handleSearch} size='10px' type='text'></Input>
+        <div >
+            <label >
+                <Input className="stsearch" onChange={handleSearch} size='10px' type='text' placeholder='Search Students'></Input>
             </label>
             {/* <Button onClick={handleSearch}>Submit</Button> */}
         </div>
         <div  className="stfilter">
-            <Flex gap={4} wrap align="center">
+            <Flex  wrap align="center">
                  
                 {tagsData.map((tag) => (
             <Tag.CheckableTag
@@ -129,8 +135,9 @@ function AllStudents() {
             style={{
               backgroundColor: selectedTags.includes(tag) ? 'violet' : '',  // Set violet color when checked
               color: selectedTags.includes(tag) ? 'white' : '',
-              margin:"10px"  // Change text color to white when checked
+              margin:"10px",  // Change text color to white when checked
             }}
+            className='tags'
             >
             {tag}
             </Tag.CheckableTag>
@@ -142,24 +149,33 @@ function AllStudents() {
           {/*All about the template and here we should work for mapping */}
           {combinedFilteredStudents.map((student) => (
           <div key={student.user_id} className="stinduvidual">
-              <p>Since {student.year_adm}</p>
+              <p className='since'>Since {student.year_adm}</p>
               {/* <h5>{student.user?.user_metadata?.username || 'Unknown'}</h5> */}
-              <Link to={`/eachstudent/${student.user_id}`}>{student.user?.user_metadata?.username || 'Unknown'}</Link>
-              <p>{Array.isArray(student.courses) 
-                  ? student.courses.join(', ') 
-                  : 'No courses available'} Student</p>
+              <div className='nameAvatar'>
+                <div className='nameCourse'>
+                  < Link to={`/eachstudent/${student.user_id}`} className='studentName'>{student.user?.user_metadata?.username || 'Unknown'}</Link>
+                <p className='studentCourse'>{Array.isArray(student.courses) 
+                    ? student.courses.join(', ') 
+                    : 'No courses available'} Student</p>
+                </div>
+                <img src={studentAvatar} alt="" className='avatar' />
+              </div>
+
+            
               <div className="stlearning">
-                  <p>Grade {student.lessons}</p>
-                  <h5>{Array.isArray(student.curr_learn) 
-                    ?student.curr_learn[0] : "Not Learning Now !"}</h5>
-                  <p>{Array.isArray(student.curr_learn) 
+                <div className='gradeLearn' >
+                  <p className='grade'>Grade {student.lessons}</p>
+                    <h5 className='learn'>{Array.isArray(student.curr_learn) 
+                      ?student.curr_learn[0] : "Not Learning Now !"}</h5>
+                </div >
+                  <p className='progress'>{Array.isArray(student.curr_learn) 
                     ?student.curr_learn[1] : "No Progress !"}</p>
               </div>
           </div>
           ))}
       </div>
         )}
-        
+      <Footer/>
     </div>
   )
 }

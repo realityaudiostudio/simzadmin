@@ -1,13 +1,66 @@
+.allStudent{
+    padding-top: 48px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sthead h2{
+    color: #380F43;
+    font-family: Blinker;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+.sthead p{
+    color: #380F43;
+    font-family: Blinker;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.stsearch input{
+    margin: 20px;
+}
+.stsearch{
+
+    margin: 0px;
+    color: #CD8CE6;
+    font-family: Blinker;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    height: 44px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: #F6EBFC;
+}
+
 .sttemplate
 {
-    border: 2px solid;
-    width: 100vw;
+    align-items:center;
+    display: flex;
+    flex-direction: column;
+    gap:41px;
+    padding-bottom: 148px;
+
 }
 .stinduvidual
 {
-    border: 1px dashed;
-    margin:10px;
-    width: 250px;
+    position: relative;
+    overflow: hidden;
+    padding-top: 24px;
+    padding-left: 9px;
+    padding-bottom:30px ;
+    width: 352px ;
+    flex-shrink: 0;
+    border-radius: 31px;
+    background: #E5EEF9;
+    display: flex;
+    flex-direction: column;
 }
 
 .loader-container {
@@ -41,3 +94,110 @@
     }
 }
 
+.since{
+    color: #12273F;
+    font-family: Blinker;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.studentName{
+    width: 140px;
+    text-decoration: none;
+    color: #12273F;
+    font-family: Blinker;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    word-break: break-word;
+}
+
+.studentCourse{
+    color: #12273F;
+    font-family: Blinker;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 4px;
+    margin-bottom: 56px;
+}
+
+.grade{
+    margin: 0px;
+    color: #1C5388;
+    font-family: Blinker;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.learn{
+    margin: 0px;
+    color: #1C5388;
+    font-family: Blinker;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.progress{
+    margin-right: 9px;
+    color: #12273F;
+    font-family: Blinker;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    left: 0;
+}
+
+.avatar{
+    width: 221px;
+    height: 221px;
+    flex-shrink: 0;
+    padding-top: 8px;
+    margin-right: -26px;
+}
+.nameAvatar{
+    
+    display: flex;
+}
+.gradeLearn{
+
+}
+
+.stlearning{
+    display: flex;
+    justify-content: space-between;
+}
+.since{
+    margin: 0px;
+}
+.nameCourse{
+    margin-top: 59px;
+    width: 140px;
+}
+
+.tags{
+    align-content: center;
+    width: 70px;
+    margin: 0px;
+    text-align: center;
+    font-family: Blinker;
+    height: 27px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    background: #F2D9FF;
+    
+}
+
+.stfilter{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

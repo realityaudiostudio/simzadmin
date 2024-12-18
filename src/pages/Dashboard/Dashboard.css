@@ -65,6 +65,7 @@
     width: 393px;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 13px;
     flex-wrap: wrap;
 }
