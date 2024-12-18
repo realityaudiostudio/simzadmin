@@ -52,7 +52,7 @@ function Login() {
           if (error)
           {
             console.error("Login attempt failed !",error);
-            alert("Login Failed !",error)
+            message.error("Login Failed !")
           }
           else if (email ==="alanjosesanto@outlook.com")
           {

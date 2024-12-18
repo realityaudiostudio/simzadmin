@@ -16,6 +16,7 @@ const SidePanel = ({ isVisible, togglePanel }) => {
         <li><a href="#home">Home</a></li>
         <li><Link to='/allstudents'>Student Details</Link></li>
         <li><Link to='/allattendance'>Attendance Details</Link></li>
+        <li><Link to='/feedetails'>Fee Details</Link></li>
         <li><a href="#services">Notifications</a></li>
       </ul>
     </div>
