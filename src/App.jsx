@@ -11,10 +11,9 @@ import Login from './pages/Login/Login';
 import { UserProvider } from './context/UserContext/UserContext';
 import ProtectedRoute from './context/Protected/ProtectedRoute';
 import StudentInd from './pages/StudentInd/StudentInd';
-import Attendance from './pages/Attendance/Attendance';
+import Attendance from './pages/Attendance/Attendance1';
 import { StudentProvider } from './context/StudentContext/StudentContext';
 import Lessons from './pages/Lessons/Lessons';
-
 import AllAttendance from './pages/AllAttendance/AllAttendance';
 import FeePage from './pages/FeePage/FeePage';
 
