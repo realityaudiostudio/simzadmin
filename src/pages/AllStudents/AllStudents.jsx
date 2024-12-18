@@ -149,11 +149,9 @@ function AllStudents() {
                   ? student.courses.join(', ') 
                   : 'No courses available'} Student</p>
               <div className="stlearning">
-                  <p>Grade {student.lessons}</p>
-                  <h5>{Array.isArray(student.curr_learn) 
-                    ?student.curr_learn[0] : "Not Learning Now !"}</h5>
-                  <p>{Array.isArray(student.curr_learn) 
-                    ?student.curr_learn[1] : "No Progress !"}</p>
+                  <p>Grade {student.grade_completed}</p>
+                  <h5>{student.curr_learn} </h5>
+                  <p>In Progress</p>
               </div>
           </div>
           ))}

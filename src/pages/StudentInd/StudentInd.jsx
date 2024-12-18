@@ -84,7 +84,9 @@ function StudentInd() {
             username: studentInd.user?.user_metadata?.username || "",
             fee_due: studentInd.fee_due || "",
             grade_completed: studentInd.grade_completed || "",
-            courses: studentInd.courses ? studentInd.courses.join(', ') : "", // Convert array to string
+            courses: studentInd.courses ? studentInd.courses.join(', ') : "",
+            curr_learn : studentInd.curr_learn,
+            // Convert array to string
         });
         setIsEditing(true);
     };
@@ -130,7 +132,9 @@ function StudentInd() {
                 ...prevState,
                 fee_due: formData.fee_due,
                 grade_completed: formData.grade_completed,
-                courses: updatedCourses, // Update local state with array
+                courses: updatedCourses,
+                curr_learn : formData.curr_learn,
+                // Update local state with array
             }));
     
             setIsEditing(false); // Exit editing mode
@@ -216,6 +220,8 @@ function StudentInd() {
         <Input name="fee_due" type="text" onChange={handleInputChange} placeholder="Enter Fee Due" value={formData.fee_due || ""} />
         <Input name="grade_completed" type="text" onChange={handleInputChange} placeholder="Enter Grade" value={formData.grade_completed || ""} />
         <Input name="courses" type="text" onChange={handleInputChange} placeholder="Enrolled Courses" value={formData.courses || ""} />
+        <Input name="curr_learn" type="text" onChange={handleInputChange} placeholder="Currently Learning" value={formData.curr_learn || ""} />
+
         <Button onClick={handleForm}>Save</Button>
     </div>
 )}
