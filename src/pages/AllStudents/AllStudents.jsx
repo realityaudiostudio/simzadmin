@@ -7,7 +7,7 @@ import { Flex, Tag , Input , Button } from 'antd';
 import { useUser } from '../../context/UserContext/UserContext';
 import { Link, useNavigate } from 'react-router-dom';
 import NavigationButton from '../../components/NavigationButton/NavigationButton';
-import studentAvatar from  '../../assets/studentAvatar.svg';
+import studentAvatar from  '../../assets/studentavatar.png';
 import Footer from '../../components/Footer/Footer';
 import searchicon from '../../assets/searchicon.svg'
 
