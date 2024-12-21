@@ -13,7 +13,7 @@ const SidePanel = ({ isVisible, togglePanel }) => {
       </button>
       <img className='logo' src={logo} alt="" />
       <ul>
-        <li><a href="#home">Home</a></li>
+        <li><a href="/dashboard">Home</a></li>
         <li><Link to='/allstudents'>Student Details</Link></li>
         <li><Link to='/allattendance'>Attendance Details</Link></li>
         <li><Link to='/feedetails'>Fee Details</Link></li>
