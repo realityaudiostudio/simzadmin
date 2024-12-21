@@ -3,7 +3,7 @@ import Header from '../../components/Header/Header'
 import sheets from '../../assets/sheets.svg'
 import Pills from '../../components/Pills/Pills';
 import AddButton from '../../components/AddButton/AddButton';
-import './sheets.css'
+import './Sheets.css'
 
 function Sheets() {
   const handleClick = () => {
