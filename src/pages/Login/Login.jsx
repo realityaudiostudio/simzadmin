@@ -76,7 +76,7 @@ function Login() {
             <h2 className='loginSubt'>Email Address</h2>
             <Input className='loginInput' onChange={handleEmail} style={{width:"400px",margin:"10px"}} type='email' placeholder='Enter Email'></Input>
             <h2 className='loginSubt'>Password</h2>
-            <div class="password-input-container">
+            <div className="password-input-container">
               <Input className='loginInput' onChange={handlePassword} type={isPasswordVisible ? 'text' : 'password'} style={{width:"400px",margin:"10px"}} placeholder='Enter Password '></Input>
               <button onClick={togglePasswordVisibility} className="eyelash-button" id="togglePassword" >
               {isPasswordVisible ? (
