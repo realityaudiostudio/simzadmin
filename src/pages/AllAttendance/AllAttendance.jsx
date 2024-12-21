@@ -14,6 +14,7 @@ function AllAttendance() {
   const [filteredStudent, setFilteredStudent] = useState(null);
   const [studentData, setStudentData] = useState([]);
   const [eduthath, setEduthath] = useState('');
+  const [messageApi, contextHolder] = message.useMessage();
   const { user } = useUser();
   const navigate = useNavigate();
 
@@ -119,17 +120,24 @@ function AllAttendance() {
         console.log("Issues in inserting attendance:", error);
         message.error("Error inserting attendance");
       } else {
-        message.success("Inserted Successfully!");
+        messageApi.open({
+          type: 'success',
+          content: 'Attendance Added!',
+        });
         console.log("Data inserted:", attendanceData);
       }
     } catch (error) {
       console.error("Error during attendance insertion:", error);
-      message.error("Error inserting attendance");
+      messageApi.open({
+        type: 'error',
+        content: 'Unable to add',
+      });
     }
   };
 
   return (
     <div>
+      {contextHolder}
       <Select
         defaultValue="select"
         style={{

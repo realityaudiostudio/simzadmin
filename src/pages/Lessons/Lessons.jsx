@@ -85,7 +85,10 @@ function Lessons() {
         }
         else
         {
-            message.success("Lesson Added !");
+            messageApi.open({
+                type: 'success',
+                content: 'Lesson Added!',
+              });
             console.log(data);
         }
         // setLessonData([...lessonData, FormData]);

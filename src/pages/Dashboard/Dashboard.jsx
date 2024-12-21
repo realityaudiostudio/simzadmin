@@ -37,7 +37,7 @@ const togglePanel = () => {
 
 function handleLogout ()
 {
-  message.success("Logged Out!");
+  
   logout();
   navigate('/');
 }
@@ -192,6 +192,7 @@ async function getDetailsCount() {
     }
   return (
     <div className='Dashboard'>
+      {contextHolder}
         <div className='navLog'>
           <NavigationButton />
           <Button className='logoutBt' onClick={handleLogout}>Logout</Button>
@@ -199,7 +200,7 @@ async function getDetailsCount() {
         {/* <SidePanel isVisible={isPanelVisible} togglePanel={togglePanel} /> */}
         <div className='MessageSearch'>
             <div className='MessageTitle'>
-              <h2 className='Message'>👋 Welcome in , {user.email}</h2>
+              <h2 className='Message'>👋 Welcome in ,{user ? (<p>{user.email}</p>) : (<p>No user</p>)} </h2>
               <h1 className='Title'>Dashboard</h1>
             </div>
             <div className='SearchButton'><img className='SearchIcon' src={SearchButton} alt="" /></div>

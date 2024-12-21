@@ -1,4 +1,4 @@
-import { useState } from "react";
+import react,{ useState } from "react";
 import { createContext, useContext } from "react";
 
 const StudentContext = createContext();
