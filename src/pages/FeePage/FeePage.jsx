@@ -11,6 +11,8 @@ function FeePage() {
   const [formData, setFormData] = useState({});
   const [options, setOptions] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
+    const [messageApi, contextHolder] = message.useMessage();
+  
 
   // Fetch fee data
   useEffect(() => {
@@ -69,7 +71,10 @@ function FeePage() {
 
     const userUid = authData?.[0]?.id || null;
     if (!userUid) {
-      message.error('User not found');
+      messageApi.open({
+        type: 'error',
+        content: 'userNot Found',
+      });
       return;
     }
 
@@ -84,15 +89,22 @@ function FeePage() {
 
     if (error) {
       console.error('Error inserting fee data:', error);
-      message.error('Failed to add fee details');
+      messageApi.open({
+        type: 'error',
+        content: 'Failed to add Fee Details',
+      });
     } else {
-      message.success('Fee details added successfully!');
+      messageApi.open({
+        type: 'success',
+        content: 'Fee Details added Sucessfully',
+      });
       setIsEditing(false);
     }
   };
 
   return (
     <div>
+      {contextHolder}
       <h3>Fee Details</h3>
       {feeData.map((feed, index) => (
         <div key={index} className="feedata">

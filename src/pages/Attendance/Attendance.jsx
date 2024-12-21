@@ -43,7 +43,8 @@ function Attendance() {
                     stAtt.map((attendance) => (
                         <div key={attendance.id} className="attendance-item">
                             <p>Date: {attendance.date}</p>
-                            <p>Status : {attendance.is_present ? (<p>Present</p>) : (<p>Absent</p>) }</p>
+                            <p>Status : </p>
+                            {attendance.is_present ? (<p>Present</p>) : (<p>Absent</p>) }
                         </div>
                     ))
                 ) : (

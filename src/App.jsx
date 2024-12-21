@@ -17,6 +17,7 @@ import Lessons from './pages/Lessons/Lessons';
 import AllAttendance from './pages/AllAttendance/AllAttendance';
 import FeePage from './pages/FeePage/FeePage';
 import RecordedClass from './pages/RecordedClass/RecordedClass';
+import LiveClass from './pages/LiveClass/LiveClass';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/allattendance" element={<AllAttendance/>} />
           <Route path="/feedetails" element={<FeePage/>} />
           <Route path="/recorded" element={<RecordedClass/>} />
+          <Route path="/live" element={<LiveClass/>} />
           <Route path='/allstudents' element={<ProtectedRoute><AllStudents/></ProtectedRoute>}/>
           <Route path='/dashboard' element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
           <Route path='/eachstudent/:id' element={<ProtectedRoute><StudentInd/></ProtectedRoute>}/>

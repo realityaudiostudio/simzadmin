@@ -19,7 +19,18 @@ function RecordedClass() {
     const [videoCourse,setVideoCourse]  = useState('');
     const [messageApi, contextHolder] = message.useMessage();
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data, error } = await supabase.from('test_video_player').select('*');
     
+            if (error) {
+                console.log("Something issues", error);
+            } else {
+                setRecData(data);
+            }
+        };
+        fetchData();
+    }, [recData]); 
 
     const hname = (e) => {
         setVideoName(e.target.value);
@@ -53,11 +64,20 @@ function RecordedClass() {
                 throw error;
             }
     
-            message.success("Added Successfully!");
-            alert("Data added!");
-            setRecData((prevData) => [...prevData, data]); // Update local state
+            messageApi.open({
+                type: 'success',
+                content: 'Added!',
+              });
+            // alert("Data added!");
+            if (data) {
+                setRecData((prevData) => [...prevData, ...data]); // Spread the array into the state
+            }
+            
         } catch (error) {
-            // message.error(`Error: ${error.message}`);
+            messageApi.open({
+                type: 'error',
+                content: 'Issue found!',
+              });
             alert("Failed");
             console.error("Submit Error:", error);
         } finally {
@@ -67,36 +87,24 @@ function RecordedClass() {
     
 
 
-    useEffect(()=>
-    {
-        const fetchData = async ()=>
-        {
-            const {data,error} = await supabase.from('test_video_player').select('*');
-
-            if(error)
-            {
-                console.log("Something issues",error);
-            }
-            else
-            {
-                // console.log("data arrived",data);
-                setRecData(data);
-            }
-        }
-        fetchData();
-    },[recData])
+ // Empty dependencies to run only once
+    
 
   return (
 
     <div>
+        {contextHolder}
         <h3>Recorded Classes</h3>
-        {recData.map((recdat,index)=>
-        (<div key={index} className="listrec">
-            <h3>{recdat.video_name}</h3>
-            <p>{recdat.video_description}</p>
-            <a href={recdat.video_url}>Play</a>
-        </div>)
-        )}
+        {recData?.map((recdat, index) =>
+  recdat && recdat.video_name ? ( // Add a null/undefined check
+    <div key={index} className="listrec">
+      <h3>{recdat.video_name}</h3>
+      <p>{recdat.video_description}</p>
+      <a href={recdat.video_url} target="_blank" rel="noopener noreferrer">Play</a>
+    </div>
+  ) : null // Skip invalid entries
+)}
+
         <Button onClick={openEdit}>Add video</Button>
         {isEditing && (
             <div className="editer">
