@@ -5,6 +5,7 @@ import { createClient } from "@supabase/supabase-js";
 import { useUser } from '../../context/UserContext/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
+import Header from '../../components/Header/Header';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -138,6 +139,7 @@ function AllAttendance() {
   return (
     <div>
       {contextHolder}
+      <Header title={"Attendance Sheet"}/>
       <Select
         defaultValue="select"
         style={{
@@ -167,13 +169,15 @@ function AllAttendance() {
         {filteredStudent && filteredStudent.length > 0 ? (
           <div style={{ marginTop: "20px" }}>
             <h3>Students</h3>
-            {filteredStudent.map((student) => (
-              <div key={student.userId}>
-                <p><strong>{student.username || "N/A"}</strong></p>
-                <Button onClick={() => handleChangeS('present', student)}>Present</Button>
-                <Button onClick={() => handleChangeS('absent', student)}>Absent</Button>
-              </div>
-            ))}
+            {filteredStudent
+              .sort((a, b) => a.username.localeCompare(b.username)) // Sort students alphabetically
+              .map((student) => (
+                <div key={student.userId}>
+                  <p><strong>{student.username || "N/A"}</strong></p>
+                  <Button onClick={() => handleChangeS('present', student)}>Present</Button>
+                  <Button onClick={() => handleChangeS('absent', student)}>Absent</Button>
+                </div>
+              ))}
           </div>
         ) : (
           <div style={{ marginTop: "20px" }}>

@@ -3,7 +3,7 @@ import './attendance.css';
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from '../../context/UserContext/UserContext';
 import { useNavigate, useParams } from 'react-router-dom';
-import './Attendance.css'
+
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 

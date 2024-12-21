@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { Button } from 'antd';
 import { Input } from 'antd';
 import { message } from 'antd';
+import Header from '../../components/Header/Header';
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -94,7 +95,7 @@ function RecordedClass() {
 
     <div>
         {contextHolder}
-        <h3>Recorded Classes</h3>
+        <Header title={"Recorded Classes"}/>
         {recData?.map((recdat, index) =>
   recdat && recdat.video_name ? ( // Add a null/undefined check
     <div key={index} className="listrec">
