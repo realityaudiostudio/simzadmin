@@ -12,8 +12,8 @@
 }
 
 .pillTitle{
+    padding-left: 10px;
     margin: 0px;
-    color: #380F43;
     font-family: Blinker;
     font-size: 20px;
     font-style: normal;
@@ -22,19 +22,22 @@
 }
 
 .pillButton{
-    width: 70px;
+    box-sizing: border-box;
+    width: auto;
     margin: 0px;
     border: none;
-    display: flex;
-    padding: 3px 2px;
-    justify-content: center;
-    align-items: center;
+    padding: 3px 10px;
     gap: 10px;
-    border-radius: 5px;
     text-align: center;
+    border-radius: 5px;
     font-family: Blinker;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+}
+
+.iconTitle{
+    align-items: center;
+    display: flex;
 }

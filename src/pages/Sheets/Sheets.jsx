@@ -15,8 +15,8 @@ function Sheets() {
       <Header title={"Sheets"}/>
       <h1 className='sheetTitle'>Keyboard Lessons</h1>
       <div className='Pills'>
-        <Pills image={sheets} title="Page 1 Title" buttonLabel="Download" onButtonClick={handleClick} bgColor="#FEE2E4" buttonColor="#FBA6AC" buttonTextColor="#450A0E"/>
-        <Pills image={sheets} title="Page 1 Title" buttonLabel="Download" onButtonClick={handleClick} bgColor="#FEE2E4" buttonColor="#FBA6AC" buttonTextColor="#450A0E"/>
+        <Pills image={sheets} title="Page 1 Title" buttonLabel="Download" onButtonClick={handleClick} bgColor="#FEE2E4" buttonColor="#FBA6AC" buttonTextColor="#450A0E" titleColor="#450A0E"/>
+        <Pills image={sheets} title="Page 1 Title" buttonLabel="Download" onButtonClick={handleClick} bgColor="#FEE2E4" buttonColor="#FBA6AC" buttonTextColor="#450A0E" titleColor="#450A0E"/>
       </div>
       <div className='addButtond'>
         <AddButton title="Add lessons"/>
