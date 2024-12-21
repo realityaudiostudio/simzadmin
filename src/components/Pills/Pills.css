@@ -1,4 +1,5 @@
 .Pill{
+    width: 360px;
     box-sizing: border-box;
     display: flex;
     height: 83px;
@@ -6,14 +7,13 @@
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    align-self: stretch;
+    align-self: center;
     border-radius: 16px;
-    background: #F6EBFC;
 }
 
 .pillTitle{
+    padding-left: 10px;
     margin: 0px;
-    color: #380F43;
     font-family: Blinker;
     font-size: 20px;
     font-style: normal;
@@ -22,21 +22,22 @@
 }
 
 .pillButton{
-    width: 70px;
+    box-sizing: border-box;
+    width: auto;
     margin: 0px;
     border: none;
-    display: flex;
-    padding: 3px 2px;
-    justify-content: center;
-    align-items: center;
+    padding: 3px 10px;
     gap: 10px;
-    border-radius: 5px;
-    background: #DFB7F0;
-    color: #380F43;
     text-align: center;
+    border-radius: 5px;
     font-family: Blinker;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+}
+
+.iconTitle{
+    align-items: center;
+    display: flex;
 }

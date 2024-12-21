@@ -17,8 +17,8 @@ function Quiz() {
       <Header title={"Quiz"}/>
       <h1 className='quizTitle'>Check your brains</h1>
       <div className='Pills'>
-        <Pills image={keyboardillus} title="Page 1 Title" buttonLabel="Join" onButtonClick={handleClick}/>
-        <Pills image={keyboardillus} title="Page 1 Title" buttonLabel="Join" onButtonClick={handleClick}/>
+        <Pills image={keyboardillus} title="Page 1 Title" buttonLabel="Join" onButtonClick={handleClick} bgColor="#F6EBFC" buttonColor="#DFB7F0" buttonTextColor="#380F43" titleColor="#380F43"/>
+        <Pills image={keyboardillus} title="Page 1 Title" buttonLabel="Join" onButtonClick={handleClick} bgColor="#F6EBFC" buttonColor="#DFB7F0" buttonTextColor="#380F43" titleColor="#380F43"/>
       </div>
       <div className='addButtond'>
         <AddButton title="Add Quiz"/>
