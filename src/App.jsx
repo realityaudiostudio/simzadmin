@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import './App.css'
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -16,6 +16,7 @@ import { StudentProvider } from './context/StudentContext/StudentContext';
 import Lessons from './pages/Lessons/Lessons';
 import AllAttendance from './pages/AllAttendance/AllAttendance';
 import FeePage from './pages/FeePage/FeePage';
+import RecordedClass from './pages/RecordedClass/RecordedClass';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
           <Route path="/practice" element={<Practice/>} />
           <Route path="/allattendance" element={<AllAttendance/>} />
           <Route path="/feedetails" element={<FeePage/>} />
+          <Route path="/recorded" element={<RecordedClass/>} />
           <Route path='/allstudents' element={<ProtectedRoute><AllStudents/></ProtectedRoute>}/>
           <Route path='/dashboard' element={<ProtectedRoute><Dashboard/></ProtectedRoute>}/>
           <Route path='/eachstudent/:id' element={<ProtectedRoute><StudentInd/></ProtectedRoute>}/>
