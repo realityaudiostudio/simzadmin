@@ -4,12 +4,14 @@
 }
 .quizTitle{
     margin-top:50px ;
+    margin-bottom: 26px;
     color: #380F43;
     font-family: Blinker;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
+    padding-left: 12px; 
 }
 
 .Pills{
