@@ -16,7 +16,7 @@ function Syllabus() {
   return (
     <div className='syllabus'>
       <Header title={"Syllabus"}/>
-      <h1 className='syllabusTitle'>Keyboard Lessons</h1>
+      <h1 className='syllabusTitle'>Keyboard Syllabus</h1>
       <div className='Pills'>
         <Pills image={keyboardillus} title="Page 1 Title"  onButtonClick={handleClick} bgColor="#C4DCF3"  titleColor="#1B3C5F" buttonColor="transparent" buttonIcon={getbutton}/>
       </div>
