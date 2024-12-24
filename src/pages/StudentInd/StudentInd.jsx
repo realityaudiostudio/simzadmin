@@ -198,7 +198,7 @@ function StudentInd() {
             <h3>{studentInd.grade_completed}</h3>
         </div>
         <div className='gradeFee'>
-            <p>Fee due</p>
+            <p>Fee Due</p>
              <h3>Rs.{studentInd.fee_due}</h3>
         </div>
     </div>
@@ -208,7 +208,7 @@ function StudentInd() {
     <div className="editingspace">
         <p>Name</p>
         <Input name="username" type="text" onChange={handleInputChange} placeholder="Update Name" value={formData.username || ""} />
-        <p>Fee due</p>
+        <p>Fee Due</p>
         <Input name="fee_due" type="text" onChange={handleInputChange} placeholder="Enter Fee Due" value={formData.fee_due || ""} />
         <p>Grade Covered</p>
         <Input name="grade_completed" type="text" onChange={handleInputChange} placeholder="Enter Grade" value={formData.grade_completed || ""} />
