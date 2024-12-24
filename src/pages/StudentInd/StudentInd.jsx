@@ -8,6 +8,14 @@ import { createClient } from "@supabase/supabase-js";
 import { useStudent } from '../../context/StudentContext/StudentContext';
 import { EditOutlined } from '@ant-design/icons';
 import { Button, Input } from 'antd';
+import avatar from '../../assets/avatarfull.png';
+import badge from '../../assets/badge.svg';
+import certificate from '../../assets/certificate.svg';
+import certificateicon from '../../assets/certificateicon.svg';
+import badgeicon from '../../assets/badgeicon.svg';
+import NavigationButton from '../../components/NavigationButton/NavigationButton';
+import Footer from '../../components/Footer/Footer';
+
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
 
@@ -160,32 +168,55 @@ function StudentInd() {
     
 
   return (
-    <div>
+    <div className='studentind'>
+        <div className='navbutton'>
+            <NavigationButton/>
+        </div>
+        
         {studentInd ? (
             <div key={studentInd.user_id}>
             <div className="stindhead">
-    <h3>{studentInd.user?.user_metadata?.username || 'Unknown'}</h3>
+                <div className='stindnameAvatar'>
+                    <img src={avatar} alt="" className='avatarImage'/>
+                    <div className='stindname'>
+                        <h3>{studentInd.user?.user_metadata?.username || 'Unknown'}</h3>
     <p>{Array.isArray(studentInd.courses) 
               ? studentInd.courses.join(', ') 
               : 'No courses available'} Student</p>
-    <Link to={`/attendance/${studentInd.user_id}`}>Attendance </Link>
+              <div className='stindbuttonlinks'>
+                <Link to={`/attendance/${studentInd.user_id}`}>Attendance </Link>
     <Link to={`/lessons/${studentInd.user_id}`}>Lessons</Link>
-    <p>Grade Covered : {studentInd.grade_completed}</p>
-    <p>Fee due : Rs.{studentInd.fee_due}</p>
+              </div>
+    
+                    </div>
+                    
+                </div>
+    <div className='gradeFees'>
+        <div className='gradeFee'>
+            <p>Grade Covered</p>
+            <h3>{studentInd.grade_completed}</h3>
+        </div>
+        <div className='gradeFee'>
+            <p>Fee due</p>
+             <h3>Rs.{studentInd.fee_due}</h3>
+        </div>
+    </div>
     <EditOutlined onClick={handleEdit} />
     </div>
     <div className="stindbadge">
         <h5>Badges Gained</h5>
         <ul>
-            <li>Red Badge</li>
-            <li>Green badge</li>
+            <li><img src={badge} alt="" />Red Badge</li>
+            <li><img src={badge} alt="" />Green badge</li>
+            <button><img src={badgeicon} alt="" />add Badge</button>
         </ul>
     </div>
     <div className="stindcertificate">
     <h5>Certificates Earned</h5>
         <ul>
-            <li>Initial </li>
-            <li>1</li>
+            <li><img src={certificate} alt="" />Initial </li>
+            <li><img src={certificate} alt="" />1</li>
+            <button><img src={certificateicon} alt="" />add certificate</button>
         </ul>
     </div>
         </div>
@@ -227,6 +258,8 @@ function StudentInd() {
 )}
 
         {/* Editing space end */}
+
+    <Footer/>
     </div>
   )
 }

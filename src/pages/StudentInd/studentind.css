@@ -46,3 +46,196 @@
      40%,50% {transform: rotate(0.25turn) scale(0.5)}
      100%    {transform: rotate(0.5turn) scale(1)}
   }
+
+.navbutton{
+  width: 361px;
+}
+.studentind{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 48px;
+}
+.stindname h3{
+  padding-top: 16px;
+  margin:0px;
+  color: #380F43;
+  font-family: Blinker;
+  font-size:clamp(10px, 27px, 32px);
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  width: 229px;
+}
+
+.stindname p{
+  width: 200px;
+  padding-top: 8px;
+  margin:0px;
+  color: #380F43;
+  font-family: Blinker;
+  font-size:clamp(10px, 15px, 20px);;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.stindbuttonlinks{
+  margin-bottom: 14px;
+  margin-top: 11px;
+  display: flex;
+  gap:9px ;
+}
+.stindbuttonlinks a{
+  text-decoration: none;
+  display: inline-flex;
+  padding: 5px 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  border-radius: 5px;
+  background: #5B2867;
+  color: #FBF6FD;
+  font-family: Blinker;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.avatarImage{
+  width: 138px;
+  height:138px;
+  align-self: flex-end;
+}
+
+.stindnameAvatar{
+  border-bottom: 1px solid #ECD7F7;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin-top: 69px;
+  display: flex;
+  gap: 7px;
+}
+
+.gradeFees{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  gap: 77px;
+  margin-top: 20px;
+  margin-bottom: 31px;
+}
+
+.gradeFee p{
+  margin: 0px;
+  color: #380F43;
+  text-align: center;
+  font-family: Blinker;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+}
+
+.gradeFee h3{
+  margin: 0px;
+  color: #5B2867;
+  text-align: center;
+  font-family: Blinker;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.stindbadge h5{
+  margin-bottom: 20px;
+  color: #380F43;
+  font-family: Blinker;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  width: 163px;
+  height: 23px;
+  flex-shrink: 0;
+}
+
+.stindbadge ul{
+  gap: 7px;
+  margin: 0px;
+  display: flex;
+  padding: 0px;
+  align-items: center;
+}
+
+.stindbadge li{
+  color: #380F43;
+  font-family: Blinker;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  list-style-type:none;
+}
+
+.stindcertificate{
+  margin-bottom: 188px;
+}
+.stindcertificate h5{
+  margin-top: 43px;
+  margin-bottom: 11px;
+  color: #380F43;
+  font-family: Blinker;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  width: 163px;
+  height: 23px;
+  flex-shrink: 0;
+}
+
+.stindcertificate ul{
+  align-items: center;
+  display: flex;
+  padding: 0px;
+  gap: 27px;
+}
+
+.stindcertificate li{
+  color: #380F43;
+  font-family: Blinker;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  list-style-type:none;
+}
+
+.stindbadge  button,.stindcertificate button{
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  width: 104px;
+  height: 147px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  border: 1px dashed #5B2867;
+  background-color: transparent;
+  color: #380F43;
+  font-family: Blinker;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
