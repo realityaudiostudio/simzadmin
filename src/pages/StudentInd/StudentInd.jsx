@@ -186,6 +186,7 @@ function StudentInd() {
               <div className='stindbuttonlinks'>
                 <Link to={`/attendance/${studentInd.user_id}`}>Attendance </Link>
     <Link to={`/lessons/${studentInd.user_id}`}>Lessons</Link>
+    <EditOutlined onClick={handleEdit} />
               </div>
     
                     </div>
@@ -201,7 +202,26 @@ function StudentInd() {
              <h3>Rs.{studentInd.fee_due}</h3>
         </div>
     </div>
-    <EditOutlined onClick={handleEdit} />
+    
+    
+    {isEditing && (
+    <div className="editingspace">
+        <p>Name</p>
+        <Input name="username" type="text" onChange={handleInputChange} placeholder="Update Name" value={formData.username || ""} />
+        <p>Fee due</p>
+        <Input name="fee_due" type="text" onChange={handleInputChange} placeholder="Enter Fee Due" value={formData.fee_due || ""} />
+        <p>Grade Covered</p>
+        <Input name="grade_completed" type="text" onChange={handleInputChange} placeholder="Enter Grade" value={formData.grade_completed || ""} />
+        <p>Courses</p>
+        <Input name="courses" type="text" onChange={handleInputChange} placeholder="Enrolled Courses" value={formData.courses || ""} />
+        <p>Currently Learning</p>
+        <Input name="curr_learn" type="text" onChange={handleInputChange} placeholder="Currently Learning" value={formData.curr_learn || ""} />
+
+        <Button onClick={handleForm}>Save</Button>
+    </div>
+)}
+
+        {/* Editing space end */}
     </div>
     <div className="stindbadge">
         <h5>Badges Gained</h5>
@@ -245,19 +265,7 @@ function StudentInd() {
         </div> */}
         {/* editing space */}
 
-        {isEditing && (
-    <div className="editingspace">
-        <Input name="username" type="text" onChange={handleInputChange} placeholder="Update Name" value={formData.username || ""} />
-        <Input name="fee_due" type="text" onChange={handleInputChange} placeholder="Enter Fee Due" value={formData.fee_due || ""} />
-        <Input name="grade_completed" type="text" onChange={handleInputChange} placeholder="Enter Grade" value={formData.grade_completed || ""} />
-        <Input name="courses" type="text" onChange={handleInputChange} placeholder="Enrolled Courses" value={formData.courses || ""} />
-        <Input name="curr_learn" type="text" onChange={handleInputChange} placeholder="Currently Learning" value={formData.curr_learn || ""} />
 
-        <Button onClick={handleForm}>Save</Button>
-    </div>
-)}
-
-        {/* Editing space end */}
 
     <Footer/>
     </div>

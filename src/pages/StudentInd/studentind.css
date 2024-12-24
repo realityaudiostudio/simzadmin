@@ -239,3 +239,34 @@
   font-weight: 400;
   line-height: normal;
 }
+
+.editingspace{
+  transition: 5s;
+  width: 361px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+}
+
+.editingspace input{
+  font-family: Blinker;
+  color:#712c84;
+  border: none;
+}
+.editingspace p{
+  font-weight: 500;
+  align-self: flex-start;
+  font-family: Blinker;
+  color:#380F43;
+  margin-bottom: 2px;
+  margin-left: 5px;
+}
+.editingspace button{
+  margin-top:10px ;
+  font-family: Blinker;
+  background-color: #380F43;
+  color: #ECD7F7;
+  border: none;
+}
