@@ -247,28 +247,7 @@ function StudentInd() {
     </div>
         </div>
         ) : (<div className="loader-container"><div className='loaderAllSTI'></div></div>)}
-        {/* <div className="stindhead">
-        <h3>Alan Jose Santo</h3>
-        <p>Keyboard Student</p>
-        <Link to='/attendance'>Attendance </Link>
-        <Link to='/lessons'>Lessons</Link>
-        <p>Grade Covered : GRADE 2</p>
-        <p>Fee due : Rs.2000</p>
-        </div>
-        <div className="stindbadge">
-            <h5>Badges Gained</h5>
-            <ul>
-                <li>Red Badge</li>
-                <li>Green badge</li>
-            </ul>
-        </div>
-        <div className="stindcertificate">
-        <h5>Certificates Earned</h5>
-            <ul>
-                <li>Initial </li>
-                <li>1</li>
-            </ul>
-        </div> */}
+        
         {/* editing space */}
 
 
