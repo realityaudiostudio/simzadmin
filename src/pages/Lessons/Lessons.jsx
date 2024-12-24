@@ -20,7 +20,8 @@ function Lessons() {
     const [formData ,setFormData] = useState('');
     const [isEditing,setIsEditing] = useState(false);
     const [messageApi, contextHolder] = message.useMessage();
-    const [gradeInfo,setGradeInfo] = useState('')
+    const [gradeInfo,setGradeInfo] = useState('');
+    const [currInfo,setCurrInfo] = useState('');
 
 
     useEffect (() => {
@@ -33,7 +34,7 @@ function Lessons() {
         const fetchLesson = async () =>
         {
             const {data,error} = await supabase.from('student_details')
-            .select('prev_learn,grade_completed')
+            .select('prev_learn,grade_completed,curr_learn')
             .eq('user_id', id)
             .single();
 
@@ -47,9 +48,12 @@ function Lessons() {
                 const aalkar = data;
                 const lessons = aalkar.prev_learn || [];
                 const gradeOver = aalkar.grade_completed;
+                const curr_less = aalkar.curr_learn?aalkar.curr_learn[0] : " ";
                 setLessonData(lessons);
                 setGradeInfo(gradeOver);
+                setCurrInfo(curr_less);
                 console.log(lessons);
+                console.log("ippo ntha vecha",curr_less);
             }
         }
         fetchLesson();
@@ -103,11 +107,13 @@ setIsEditing(false);
 
   return (
     <div>
+    {contextHolder}
         <div className="lshead">
             <p>Welcome {user?.email || 'Guest'}</p>
         </div>
         <h3>Lesson Tracking</h3>
         <p>Your Current Grade :{gradeInfo}</p>
+        <p>Your Current Lesson :{currInfo}</p>
         {lessonData.length > 0 ? (
                 <div>
                     {lessonData.map((record, index) => {
