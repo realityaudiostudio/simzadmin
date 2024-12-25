@@ -93,8 +93,7 @@ function StudentInd() {
             fee_due: studentInd.fee_due || "",
             grade_completed: studentInd.grade_completed || "",
             courses: studentInd.courses ? studentInd.courses.join(', ') : "",
-            curr_learn : studentInd.curr_learn,
-            // Convert array to string
+            curr_learn: studentInd.curr_learn ? studentInd.curr_learn[0] : "", // Access 0th element of curr_learn array
         });
         setIsEditing(true);
     };
@@ -126,7 +125,9 @@ function StudentInd() {
                 .update({
                     fee_due: formData.fee_due,
                     grade_completed: formData.grade_completed,
-                    courses: updatedCourses, // Save as an array
+                    courses: updatedCourses,
+                    // curr_learn:formData.curr_learn, // Save as an array
+                curr_learn: [formData.curr_learn, "In progress"], // Save as an array with "In Progress" as the first element
                 })
                 .eq('user_id', studentInd.user_id);
     
@@ -201,7 +202,12 @@ function StudentInd() {
             <p>Fee Due</p>
              <h3>Rs.{studentInd.fee_due}</h3>
         </div>
+        
     </div>
+    <div className='gradeFee'>
+            <p>Learning Now</p>
+             <h3>{studentInd.curr_learn[0]}</h3>
+        </div>
     
     
     {isEditing && (
@@ -241,28 +247,7 @@ function StudentInd() {
     </div>
         </div>
         ) : (<div className="loader-container"><div className='loaderAllSTI'></div></div>)}
-        {/* <div className="stindhead">
-        <h3>Alan Jose Santo</h3>
-        <p>Keyboard Student</p>
-        <Link to='/attendance'>Attendance </Link>
-        <Link to='/lessons'>Lessons</Link>
-        <p>Grade Covered : GRADE 2</p>
-        <p>Fee due : Rs.2000</p>
-        </div>
-        <div className="stindbadge">
-            <h5>Badges Gained</h5>
-            <ul>
-                <li>Red Badge</li>
-                <li>Green badge</li>
-            </ul>
-        </div>
-        <div className="stindcertificate">
-        <h5>Certificates Earned</h5>
-            <ul>
-                <li>Initial </li>
-                <li>1</li>
-            </ul>
-        </div> */}
+        
         {/* editing space */}
 
 
