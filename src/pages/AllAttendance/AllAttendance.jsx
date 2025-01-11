@@ -137,7 +137,7 @@ function AllAttendance() {
   };
 
   return (
-    <div>
+    <div className='allAttend'>
       {contextHolder}
       <Header title={"Attendance Sheet"}/>
       <Select
