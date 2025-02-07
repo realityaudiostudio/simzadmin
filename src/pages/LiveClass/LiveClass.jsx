@@ -65,13 +65,13 @@ function LiveClass() {
     const handleEdit = async (e) => {
         e.preventDefault();
 
-        const {data,error} = await supabase.from('live').update({
+        const {data,error} = await supabase.from('live').insert({
             live_class : lClass,
             mentor : lTeahcer,
             meet_url : lUrl,
             course : lCourse,
             day_of_that : dateTime,
-        }).eq('id',2);
+        });
         if(error)
         {
             messageApi.open({
