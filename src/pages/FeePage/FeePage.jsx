@@ -1,25 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import './feepage.css';
-import { createClient } from '@supabase/supabase-js';
-import { Button, Input, AutoComplete, message } from 'antd';
-import dayjs from 'dayjs';
-
-const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
+import React, { useState, useEffect } from "react";
+import "./feepage.css";
+import { createClient } from "@supabase/supabase-js";
+import { Button, Input, AutoComplete, message } from "antd";
+import dayjs from "dayjs";
+import Header from "../../components/Header/Header";
+import fee from "../../assets/fee.svg";
+import add from "../../assets/addicon.svg";
+const supabase = createClient(
+  import.meta.env.VITE_PROJECT_KEY,
+  import.meta.env.VITE_ANON_KEY
+);
 
 function FeePage() {
   const [feeData, setFeeData] = useState([]);
   const [formData, setFormData] = useState({});
   const [options, setOptions] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-    const [messageApi, contextHolder] = message.useMessage();
-  
+  const [messageApi, contextHolder] = message.useMessage();
+  const truncate = (text, maxLength) => {
+    if (!text) return "";
+    return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+  };
 
   // Fetch fee data
   useEffect(() => {
     const fetchFee = async () => {
-      const { data, error } = await supabase.from('fee').select('*');
+      const { data, error } = await supabase.from("fee").select("*");
       if (error) {
-        console.error('Error fetching fee data:', error);
+        console.error("Error fetching fee data:", error);
         return;
       }
       setFeeData(data);
@@ -31,9 +39,11 @@ function FeePage() {
   // Fetch users for AutoComplete
   useEffect(() => {
     const fetchEmails = async () => {
-      const { data, error } = await supabase.from('users_with_id').select('email');
+      const { data, error } = await supabase
+        .from("users_with_id")
+        .select("email");
       if (error) {
-        console.error('Error fetching user emails:', error);
+        console.error("Error fetching user emails:", error);
         return;
       }
       setOptions(data.map((item) => ({ value: item.email })));
@@ -56,30 +66,30 @@ function FeePage() {
   const handleForm = async (e) => {
     e.preventDefault();
 
-    const currentDate = dayjs().format('YYYY-MM-DD HH:mm:ss');
+    const currentDate = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
     // Fetch user ID based on selected email
     const { data: authData, error: authError } = await supabase
-      .from('users_with_id')
-      .select('id')
-      .eq('email', formData.email);
+      .from("users_with_id")
+      .select("id")
+      .eq("email", formData.email);
 
     if (authError) {
-      console.error('Error fetching user ID:', authError);
+      console.error("Error fetching user ID:", authError);
       return;
     }
 
     const userUid = authData?.[0]?.id || null;
     if (!userUid) {
       messageApi.open({
-        type: 'error',
-        content: 'userNot Found',
+        type: "error",
+        content: "userNot Found",
       });
       return;
     }
 
     // Insert fee data
-    const { error } = await supabase.from('fee').insert({
+    const { error } = await supabase.from("fee").insert({
       user_id: userUid,
       email: formData.email,
       course: formData.Course,
@@ -88,15 +98,15 @@ function FeePage() {
     });
 
     if (error) {
-      console.error('Error inserting fee data:', error);
+      console.error("Error inserting fee data:", error);
       messageApi.open({
-        type: 'error',
-        content: 'Failed to add Fee Details',
+        type: "error",
+        content: "Failed to add Fee Details",
       });
     } else {
       messageApi.open({
-        type: 'success',
-        content: 'Fee Details added Sucessfully',
+        type: "success",
+        content: "Fee Details added Sucessfully",
       });
       setIsEditing(false);
     }
@@ -105,42 +115,59 @@ function FeePage() {
   return (
     <div>
       {contextHolder}
-      <h3>Fee Details</h3>
-      {feeData.map((feed, index) => (
-        <div key={index} className="feedata">
-          <p>{feed.email}</p>
-          <p>{feed.course}</p>
-          <p>{dayjs(feed.created_at).format('DD-MM-YYYY HH:mm A')}</p>
-          <p>{feed.amount}</p>
-        </div>
-      ))}
-      <Button onClick={handleAdd}>Add Fee</Button>
+      <Header title={"Payment History"} />
+
+      <div className="btn">
+        {" "}
+        <Button onClick={handleAdd}>
+          Add Payment <img src={add} alt="" />
+        </Button>
+      </div>
       {isEditing && (
         <div className="edit">
           <AutoComplete
-            style={{ width: 200 }}
             options={options}
             placeholder="Enter or select an email"
             filterOption={(inputValue, option) =>
-              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+              -1
             }
-            onChange={(value) => handleInput(value, 'email')}
+            onChange={(value) => handleInput(value, "email")}
           />
           <Input
             name="Course"
             type="text"
-            onChange={(e) => handleInput(e.target.value, 'Course')}
+            onChange={(e) => handleInput(e.target.value, "Course")}
             placeholder="Course"
           />
           <Input
             name="amount"
             type="number"
-            onChange={(e) => handleInput(e.target.value, 'amount')}
+            onChange={(e) => handleInput(e.target.value, "amount")}
             placeholder="Amount"
           />
           <Button onClick={handleForm}>Add</Button>
         </div>
       )}
+
+      {feeData.map((feed, index) => (
+        <div key={index} className="feedata">
+          <div className="iande">
+          <img src={fee} alt="" />
+          <div className="eandc">
+            <p className="p1">{truncate(feed.email || "N/A", 21)}</p>
+            <p className="p2">{feed.course}</p>
+          </div>
+          </div>
+          
+          <div className="pandd">
+            <p className="p3">{feed.amount}</p>
+            <p className="p2">{dayjs(feed.created_at).format("DD-MM-YYYY")}</p>
+          </div>
+        </div>
+      ))}
+
+     
     </div>
   );
 }
