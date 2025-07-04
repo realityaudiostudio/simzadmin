@@ -32,28 +32,39 @@ function Login() {
   }, [user, navigate]);
 
   const handleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+  const allowedEmails = ["alanjosesanto@outlook.com", "simzmuzicacademy@gmail.com"]; // ✅ Your allowed emails
+
+  if (!allowedEmails.includes(email.toLowerCase())) {
+    messageApi.open({
+      type: 'error',
+      content: 'You are not authorized to login!',
+    });
+    return;
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    console.error('Login attempt failed!', error);
+    messageApi.open({
+      type: 'error',
+      content: 'Login Failed!',
+    });
+  } else {
+    messageApi.open({
+      type: 'success',
+      content: 'Logged in successfully!',
     });
 
-    if (error) {
-      console.error('Login attempt failed!', error);
-      messageApi.open({
-        type: 'error',
-        content: 'Login Failed!',
-      });
-    } else {
-      messageApi.open({
-        type: 'success',
-        content: 'Logged in successfully!',
-      });
+    console.log(data);
+    login(data.user.email);
+    navigate('/dashboard');
+  }
+};
 
-      console.log(data);
-      login(data.user.email);
-      navigate('/dashboard');
-    }
-  };
 
   return (
     <div>
