@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Simz Admin</string>
+    <string name="title_activity_main">Simz Admin</string>
+    <string name="package_name">simz.admin</string>
+    <string name="custom_url_scheme">simz.admin</string>
+</resources>

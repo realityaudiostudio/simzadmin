@@ -1,0 +1,7 @@
+{
+  "name": "simz-admin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
