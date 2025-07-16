@@ -7,7 +7,7 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useStudent } from "../../context/StudentContext/StudentContext";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Input } from "antd";
+import { Button, Input, Select } from "antd";
 import avatar from "../../assets/avatarfull.png";
 import badge from "../../assets/badge.svg";
 import certificate from "../../assets/certificate.svg";
@@ -29,6 +29,9 @@ function StudentInd() {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
+  //   const courseOptions = ["keyboard", "guitar", "violin", "drums"];
+  // const batchOptions = ["Batch A", "Batch B", "Batch C"];
+
   useEffect(() => {
     if (!user) {
       navigate("/");
@@ -224,11 +227,10 @@ function StudentInd() {
             <div className="gradeFee">
               <p>Batch</p>
               <h3>
-                  {Array.isArray(studentInd.batch)
-                    ? studentInd.batch.join(", ")
-                    : "No batches available"}{" "}
-                  
-                </h3>
+                {Array.isArray(studentInd.batch)
+                  ? studentInd.batch.join(", ")
+                  : "No batches available"}{" "}
+              </h3>
             </div>
 
             {isEditing && (
@@ -250,37 +252,122 @@ function StudentInd() {
                   value={formData.fee_due || ""}
                 />
                 <p>Grade Covered</p>
-                <Input
+                {/* <Input
                   name="grade_completed"
                   type="text"
                   onChange={handleInputChange}
                   placeholder="Enter Grade"
                   value={formData.grade_completed || ""}
-                />
+                /> */}
+                <Select
+                  placeholder="Select Grade"
+                  style={{ width: "100%" }}
+                  value={formData.grade_completed || ""}
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      grade_completed: value,
+                    }))
+                  }
+                >
+                  <Select.Option value="initial">Initial</Select.Option>
+                  <Select.Option value="one">one</Select.Option>
+                  <Select.Option value="two">two</Select.Option>
+                  <Select.Option value="three">three</Select.Option>
+                </Select>
                 <p>Courses</p>
-                <Input
+                {/* <Input
                   name="courses"
                   type="text"
                   onChange={handleInputChange}
                   placeholder="Enrolled Courses"
                   value={formData.courses || ""}
-                />
+                /> */}
+                <Select
+                  mode="multiple"
+                  allowClear
+                  placeholder="Select Courses"
+                  style={{ width: "100%" }}
+                  value={
+                    formData.courses
+                      ? typeof formData.courses === "string"
+                        ? formData.courses.split(",").map((s) => s.trim())
+                        : formData.courses // if already array
+                      : []
+                  }
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      courses: value.join(", "), // keep it in the same format as Input (string)
+                    }))
+                  }
+                >
+                  <Select.Option value="keyboard">Keyboard</Select.Option>
+                  <Select.Option value="guitar">Guitar</Select.Option>
+                  <Select.Option value="violin">Violin</Select.Option>
+                  <Select.Option value="vocal">Vocal</Select.Option>
+                </Select>
+
                 <p>Currently Learning</p>
-                <Input
+                {/* <Input
                   name="curr_learn"
                   type="text"
                   onChange={handleInputChange}
                   placeholder="Currently Learning"
                   value={formData.curr_learn || ""}
-                />
+                /> */}
+                <Select
+                  placeholder="Select Currently Learning"
+                  style={{ width: "100%" }}
+                  value={formData.curr_learn || ""}
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      curr_learn: value,
+                    }))
+                  }
+                >
+                  <Select.Option value="lesson1">Lesson 1</Select.Option>
+                  <Select.Option value="lesson2">Lesson2</Select.Option>
+                  <Select.Option value="lesson3">Lesson3</Select.Option>
+                </Select>
                 <p>Batch</p>
-                <Input
+                {/* <Input
                   name="batch"
                   type="text"
                   onChange={handleInputChange}
                   placeholder="Enter Batch"
                   value={formData.batch || ""}
-                />
+                /> */}
+                <Select
+                  mode="multiple"
+                  allowClear
+                  placeholder="Select Batch"
+                  style={{ width: "100%" }}
+                  value={
+                    formData.batch
+                      ? typeof formData.batch === "string"
+                        ? formData.batch.split(",").map((s) => s.trim())
+                        : formData.batch // if already array
+                      : []
+                  }
+                  onChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      batch: value.join(", "), // keep as comma-separated string
+                    }))
+                  }
+                >
+                  <Select.Option value="key0500">Key - Thu</Select.Option>
+                  <Select.Option value="key0606">Key - Fri 06</Select.Option>
+                  <Select.Option value="key0607">Key - Fri 07</Select.Option>
+                  <Select.Option value="key0608">Key - Fri 08</Select.Option>
+                  <Select.Option value="key0610">Key - Fri 10</Select.Option>
+                  <Select.Option value="key0706">Key - Sat 06</Select.Option>
+                  <Select.Option value="key0707">Key - Sat 07</Select.Option>
+                  <Select.Option value="key0708">Key - Sat 08</Select.Option>
+                </Select>
+
                 <Button onClick={handleForm}>Save</Button>
               </div>
             )}

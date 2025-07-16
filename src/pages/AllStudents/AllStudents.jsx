@@ -12,7 +12,7 @@ import Footer from '../../components/Footer/Footer';
 import searchicon from '../../assets/searchicon.svg'
 
 const supabase = createClient(import.meta.env.VITE_PROJECT_KEY, import.meta.env.VITE_ANON_KEY);
-const tagsData = ['Guitar', 'Keyboard', 'Drums', 'Vocals'];
+const tagsData = ['guitar', 'keyboard', 'drums', 'vocals'];
 
 function AllStudents() {
 
