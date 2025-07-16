@@ -1,17 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./liveclass.css";
 import { createClient } from "@supabase/supabase-js";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Button, message } from "antd";
-import { Input } from "antd";
-import { DatePicker } from "antd";
-const { RangePicker } = DatePicker;
-import Header from "../../components/Header/Header";
+import { Button, message, Input, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
-import { Select } from "antd"; // ✅ Add this at the top if not already imported
-const { Option } = Select;
+import Header from "../../components/Header/Header";
 
+const { Option } = Select;
 const supabase = createClient(
   import.meta.env.VITE_PROJECT_KEY,
   import.meta.env.VITE_ANON_KEY
@@ -53,18 +47,21 @@ function LiveClass() {
   function handleTeacher(e) {
     setLTeacher(e.target.value);
   }
+
   function handleUrl(e) {
     setLUrl(e.target.value);
   }
+
   function handleCourse(e) {
     setLCourse(e.target.value);
   }
+
   function makeEditable() {
     setIsEditing(true);
   }
+
   const handleEdit = async (e) => {
     e.preventDefault();
-
     const { data, error } = await supabase.from("live").insert({
       live_class: lClass,
       mentor: lTeahcer,
@@ -75,32 +72,70 @@ function LiveClass() {
     if (error) {
       messageApi.open({
         type: "error",
-        content: "Unable to edit",
+        content: "Unable to add",
       });
     } else {
       messageApi.open({
         type: "success",
-        content: "Live Updated",
+        content: "Live Added",
       });
+      setIsEditing(false);
     }
-    setIsEditing(false);
+  };
+  const handleDelete = async (id) => {
+    const { error } = await supabase.from("live").delete().eq("id", id);
+    if (error) {
+      messageApi.open({
+        type: "error",
+        content: "Failed to delete the class",
+      });
+    } else {
+      messageApi.open({
+        type: "success",
+        content: "Class deleted successfully",
+      });
+      // Remove from local state without re-fetch
+      setLiveData((prev) => prev.filter((item) => item.id !== id));
+    }
   };
 
   return (
-    <div>
+    <div className="live-container">
       {contextHolder}
       <Header title={"Live Classes"} />
+
       {liveData.map((stData, index) => (
-        <div key={index} className="lives">
-          <p>Current Data</p>
-          <h3>{stData.live_class}</h3>
-          <p>{stData.mentor}</p>
-          <a href={stData.meet_url}>Link</a>
-          <p>{stData.course}</p>
-          <p>{dayjs(stData.day_of_that).format("DD/MM/YYYY HH:mm:ss")}</p>
+        <div key={stData.id} className="lives">
+          <p className="live-label">Current Data</p>
+          <h3 className="live-title">{stData.live_class}</h3>
+          <p className="live-mentor">{stData.mentor}</p>
+          <a
+            className="live-link"
+            href={stData.meet_url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join Class
+          </a>
+          <p className="live-course">{stData.course}</p>
+          <p className="live-date">
+            {dayjs(stData.day_of_that).format("DD/MM/YYYY hh:mm A")}
+          </p>
+          <Button
+            type="primary"
+            danger
+            onClick={() => handleDelete(stData.id)}
+            style={{ marginTop: "0.5rem" }}
+          >
+            Delete
+          </Button>
         </div>
       ))}
-      <Button onClick={makeEditable}>Add Live</Button>
+
+      <Button className="add-button" onClick={makeEditable}>
+        Add Live
+      </Button>
+
       {isEditing && (
         <div className="editable">
           <Input
@@ -108,25 +143,19 @@ function LiveClass() {
             type="text"
             onChange={handleClassname}
             placeholder="Enter classname"
-          ></Input>
+          />
           <Input
             name="mentor"
             type="text"
             onChange={handleTeacher}
             placeholder="Enter mentor"
-          ></Input>
+          />
           <Input
             name="meet_url"
             type="text"
             onChange={handleUrl}
-            placeholder="Enter Url"
-          ></Input>
-          {/* <Input
-                    name="course"
-                    type="text"
-                    onChange={handleCourse}
-                    placeholder="Enter Course"
-                ></Input> */}
+            placeholder="Enter URL"
+          />
           <Select
             placeholder="Select Course"
             style={{ width: "100%" }}
@@ -145,7 +174,6 @@ function LiveClass() {
             <Option value="violin">Violin</Option>
             <Option value="vocal">Vocal</Option>
           </Select>
-
           <DatePicker
             showTime
             onChange={(value, dateString) => {

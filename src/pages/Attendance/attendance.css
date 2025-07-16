@@ -1,3 +1,87 @@
+.atthead, .attendance-item, .attendance-status {
+  font-family: 'Roboto', sans-serif;
+}
 .atthead{
     display: flex;
+}
+.atthead {
+  background-color: #fff;
+  padding: 16px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #6a1b9a;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.attendance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.attendance-item {
+  background-color: #fff;
+  border: 1px solid #e2d4f7;
+  border-left: 5px solid #bc6ff1;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(183, 148, 245, 0.2);
+  transition: transform 0.1s ease;
+}
+
+.attendance-item:hover {
+  transform: translateY(-2px);
+}
+
+.attendance-item p {
+  margin: 6px 0;
+  font-size: 16px;
+  color: #4a0072;
+}
+
+.attendance-status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.status-present {
+  background-color: #e1fce5;
+  color: #2e7d32;
+}
+
+.status-absent {
+  background-color: #fde2e2;
+  color: #c62828;
+}
+
+.no-records {
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: #888;
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 480px) {
+  .attendance-item {
+    padding: 12px;
+  }
+
+  .attendance-item p {
+    font-size: 14px;
+  }
+
+  .atthead {
+    font-size: 16px;
+    padding: 12px;
+  }
 }

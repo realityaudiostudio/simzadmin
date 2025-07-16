@@ -7,7 +7,7 @@ import { useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useStudent } from "../../context/StudentContext/StudentContext";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Input, Select } from "antd";
+import { Button, Input, Select, Modal } from "antd";
 import avatar from "../../assets/avatarfull.png";
 import badge from "../../assets/badge.svg";
 import certificate from "../../assets/certificate.svg";
@@ -28,9 +28,8 @@ function StudentInd() {
   const { students, studentOnly } = useStudent();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Add this state
   const navigate = useNavigate();
-  //   const courseOptions = ["keyboard", "guitar", "violin", "drums"];
-  // const batchOptions = ["Batch A", "Batch B", "Batch C"];
 
   useEffect(() => {
     if (!user) {
@@ -82,22 +81,19 @@ function StudentInd() {
             }))
           : []; // Default to an empty array if `attendance_details.data` is not an array
 
-        // console.log("Combined Data:", combinedData);
-
         // Use prev_learn field for lessons
         const lessons = combinedData.prev_learn || [];
 
         // Set state
         setStudentInd(combinedData);
         studentOnly(attendance, lessons);
-        // console.log("Setting Data",attendance,lessons);
       } catch (error) {
         console.error("Unexpected error:", error);
       }
     };
 
     fetchData();
-  }, [id, user, studentOnly, navigate, studentInd]);
+  }, [id, user, studentOnly, navigate]);
 
   const handleEdit = () => {
     setFormData({
@@ -107,7 +103,6 @@ function StudentInd() {
       courses: studentInd.courses ? studentInd.courses.join(", ") : "",
       curr_learn: studentInd.curr_learn ? studentInd.curr_learn[0] : "",
       batch: studentInd.batch ? studentInd.batch.join(", ") : "",
-      // Access 0th element of curr_learn array
     });
     setIsEditing(true);
   };
@@ -146,10 +141,8 @@ function StudentInd() {
           fee_due: formData.fee_due,
           grade_completed: formData.grade_completed,
           courses: updatedCourses,
-          // curr_learn:formData.curr_learn, // Save as an array
           curr_learn: [formData.curr_learn, "In progress"],
           batch: updatedBatch,
-          // Save as an array with "In Progress" as the first element
         })
         .eq("user_id", studentInd.user_id);
 
@@ -165,7 +158,6 @@ function StudentInd() {
         grade_completed: formData.grade_completed,
         courses: updatedCourses,
         curr_learn: formData.curr_learn,
-        // Update local state with array
       }));
 
       setIsEditing(false); // Exit editing mode
@@ -174,11 +166,60 @@ function StudentInd() {
     }
   };
 
+  // Fixed delete modal functions
+  const showDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      // Delete from student_details
+      const { error: studentError } = await supabase
+        .from("student_details")
+        .delete()
+        .eq("user_id", studentInd.user_id);
+
+      if (studentError) {
+        console.error("Error deleting student:", studentError);
+        return;
+      }
+
+      // Delete from auth
+      const { error: authError } = await supabase.auth.admin.deleteUser(
+        studentInd.user_id
+      );
+
+      if (authError) {
+        console.error("Error deleting user:", authError);
+        return;
+      }
+
+      setIsDeleteModalOpen(false);
+      
+      // Show success message and navigate
+      Modal.success({
+        title: "Student Deleted",
+        content: "The student has been successfully deleted.",
+        onOk: () => navigate("/dashboard"),
+      });
+    } catch (error) {
+      console.error("Unexpected delete error:", error);
+      Modal.error({
+        title: "Delete Failed",
+        content: "Something went wrong during deletion.",
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value, // Keep `courses` as a string during editing
+      [name]: value,
     }));
   };
 
@@ -252,13 +293,6 @@ function StudentInd() {
                   value={formData.fee_due || ""}
                 />
                 <p>Grade Covered</p>
-                {/* <Input
-                  name="grade_completed"
-                  type="text"
-                  onChange={handleInputChange}
-                  placeholder="Enter Grade"
-                  value={formData.grade_completed || ""}
-                /> */}
                 <Select
                   placeholder="Select Grade"
                   style={{ width: "100%" }}
@@ -276,13 +310,6 @@ function StudentInd() {
                   <Select.Option value="three">three</Select.Option>
                 </Select>
                 <p>Courses</p>
-                {/* <Input
-                  name="courses"
-                  type="text"
-                  onChange={handleInputChange}
-                  placeholder="Enrolled Courses"
-                  value={formData.courses || ""}
-                /> */}
                 <Select
                   mode="multiple"
                   allowClear
@@ -292,13 +319,13 @@ function StudentInd() {
                     formData.courses
                       ? typeof formData.courses === "string"
                         ? formData.courses.split(",").map((s) => s.trim())
-                        : formData.courses // if already array
+                        : formData.courses
                       : []
                   }
                   onChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
-                      courses: value.join(", "), // keep it in the same format as Input (string)
+                      courses: value.join(", "),
                     }))
                   }
                 >
@@ -309,13 +336,6 @@ function StudentInd() {
                 </Select>
 
                 <p>Currently Learning</p>
-                {/* <Input
-                  name="curr_learn"
-                  type="text"
-                  onChange={handleInputChange}
-                  placeholder="Currently Learning"
-                  value={formData.curr_learn || ""}
-                /> */}
                 <Select
                   placeholder="Select Currently Learning"
                   style={{ width: "100%" }}
@@ -332,13 +352,6 @@ function StudentInd() {
                   <Select.Option value="lesson3">Lesson3</Select.Option>
                 </Select>
                 <p>Batch</p>
-                {/* <Input
-                  name="batch"
-                  type="text"
-                  onChange={handleInputChange}
-                  placeholder="Enter Batch"
-                  value={formData.batch || ""}
-                /> */}
                 <Select
                   mode="multiple"
                   allowClear
@@ -348,13 +361,13 @@ function StudentInd() {
                     formData.batch
                       ? typeof formData.batch === "string"
                         ? formData.batch.split(",").map((s) => s.trim())
-                        : formData.batch // if already array
+                        : formData.batch
                       : []
                   }
                   onChange={(value) =>
                     setFormData((prev) => ({
                       ...prev,
-                      batch: value.join(", "), // keep as comma-separated string
+                      batch: value.join(", "),
                     }))
                   }
                 >
@@ -371,9 +384,8 @@ function StudentInd() {
                 <Button onClick={handleForm}>Save</Button>
               </div>
             )}
-
-            {/* Editing space end */}
           </div>
+          
           <div className="stindbadge">
             <h5>Badges Gained</h5>
             <ul>
@@ -391,6 +403,7 @@ function StudentInd() {
               </button>
             </ul>
           </div>
+          
           <div className="stindcertificate">
             <h5>Certificates Earned</h5>
             <ul>
@@ -414,7 +427,26 @@ function StudentInd() {
         </div>
       )}
 
-      {/* editing space */}
+      {/* Delete Student Button */}
+      <div style={{ textAlign: "center", marginTop: "2px", paddingBottom: "30px" }}>
+        <Button danger type="primary" onClick={showDeleteModal}>
+          Delete Student
+        </Button>
+      </div>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        title="Delete Student"
+        open={isDeleteModalOpen}
+        onOk={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        okText="Yes, Delete"
+        cancelText="Cancel"
+        okButtonProps={{ danger: true }}
+      >
+        <p>Are you sure you want to delete this student?</p>
+        <p>This action cannot be undone.</p>
+      </Modal>
 
       <Footer />
     </div>
