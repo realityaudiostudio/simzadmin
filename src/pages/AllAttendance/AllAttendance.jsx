@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./allattendance.css";
-import { Button, Select, Space, Switch } from "antd";
+import { Button, Select, message } from "antd";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "../../context/UserContext/UserContext";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
 import Header from "../../components/Header/Header";
 import ava from "../../assets/ava.svg";
 import thoppi from "../../assets/thoppi.svg";
@@ -16,11 +15,13 @@ const supabase = createClient(
 
 function AllAttendance() {
   const [courseList, setCourseList] = useState([]);
-  const [attendanceList, setAttendanceList] = useState({});
-  const [filteredStudent, setFilteredStudent] = useState(null);
   const [studentData, setStudentData] = useState([]);
-  const [eduthath, setEduthath] = useState("");
+  const [filteredStudent, setFilteredStudent] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [currentTime, setCurrentTime] = useState(null);
+  const [clockInterval, setClockInterval] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
+
   const { user } = useUser();
   const navigate = useNavigate();
 
@@ -29,52 +30,71 @@ function AllAttendance() {
     return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
   };
 
+  // Format to human-readable date/time
+  const formatDateTime = (date) =>
+    new Intl.DateTimeFormat("en-IN", {
+      day: "2-digit",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata",
+    }).format(date);
+
   useEffect(() => {
     if (!user) {
       navigate("/");
+      return;
     }
 
     const fetchData = async () => {
       try {
-        // Fetching student details from the 'student_details' table
         const { data: courseD, error: courseE } = await supabase
           .from("student_details")
           .select("*");
         if (courseE) throw courseE;
 
-        // Creating a consolidated list for course user IDs and course details
         const courseData = courseD.map((item) => ({
           userId: item.user_id || null,
           courses: item.courses || [],
         }));
-        setCourseList(courseData); // State to hold course-related data
+        setCourseList(courseData);
 
-        // Fetching user details from Supabase Auth
         const { data: studentD, error: studentE } =
           await supabase.auth.admin.listUsers();
         if (studentE) throw studentE;
 
-        // Creating a consolidated list for usernames and user IDs
         const userData = studentD.users.map((user) => ({
-          userId: user.id, // Adjusted field name to match Supabase Auth
+          userId: user.id,
           username: user.user_metadata.username || null,
         }));
-        setStudentData(userData); // State to hold user-related data
+        setStudentData(userData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-    console.log("User list:", studentData);
-    console.log("Course list:", courseList);
-  }, [user, filteredStudent]);
+
+    // Cleanup on component unmount
+    return () => {
+      if (clockInterval) clearInterval(clockInterval);
+    };
+  }, [user]);
 
   const handleChange = (value) => {
-    setEduthath(value);
-    console.log("Selected Value:", value);
+    setSelectedCourse(value);
 
-    // Find all students whose courses include the selected value
+    // Start live clock
+    if (clockInterval) clearInterval(clockInterval);
+    const interval = setInterval(() => {
+      setCurrentTime(formatDateTime(new Date()));
+    }, 1000);
+    setClockInterval(interval);
+
+    // Filter students based on selected course
     const matchingCourses = courseList.filter(
       (course) =>
         Array.isArray(course.courses) &&
@@ -84,74 +104,48 @@ function AllAttendance() {
     );
 
     if (matchingCourses.length > 0) {
-      console.log("Matching Course Data:", matchingCourses);
-
-      // Map the user IDs of matching courses to find the corresponding students
       const matchingStudents = matchingCourses
         .map((course) =>
           studentData.find((student) => student.userId === course.userId)
         )
-        .filter(Boolean); // Remove undefined entries
-
-      if (matchingStudents.length > 0) {
-        console.log("Matching Students:", matchingStudents);
-        setFilteredStudent(matchingStudents); // Update filteredStudent with an array of matching students
-      } else {
-        console.warn("No matching students found for the selected course.");
-        setFilteredStudent([]); // Clear filtered data
-      }
+        .filter(Boolean);
+      setFilteredStudent(matchingStudents);
     } else {
-      console.warn(
-        `The selected course "${value}" does not exist in the course list.`
-      );
-      setFilteredStudent([]); // Clear filtered data
+      setFilteredStudent([]);
     }
   };
 
   const handleChangeS = async (attends, student) => {
-    console.log(`Switch to ${attends}`);
-    const getFormattedDate = () => {
-      const now = new Date();
-      const year = now.getFullYear();
-      const month = String(now.getMonth() + 1).padStart(2, "0"); // Add leading zero
-      const day = String(now.getDate()).padStart(2, "0");
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      const seconds = String(now.getSeconds()).padStart(2, "0");
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    };
+    const now = new Date();
+    const formattedDate = formatDateTime(now);
 
-    const currentDate = getFormattedDate();
     const attendanceData = {
-      user_id: student.userId, // Use userId here to match the correct field
+      user_id: student.userId,
       user_name: student.username,
-      course: eduthath,
+      course: selectedCourse,
       is_present: attends === "present",
       is_absent: attends === "absent",
-      date: currentDate,
+      date: formattedDate,
     };
 
     try {
-      // Insert attendance into the 'attendance' table
       const { data, error } = await supabase
         .from("attendance")
         .insert([attendanceData]);
 
       if (error) {
-        console.log("Issues in inserting attendance:", error);
         message.error("Error inserting attendance");
       } else {
         messageApi.open({
           type: "success",
           content: "Attendance Added!",
         });
-        console.log("Data inserted:", attendanceData);
       }
     } catch (error) {
-      console.error("Error during attendance insertion:", error);
+      console.error("Error inserting attendance:", error);
       messageApi.open({
         type: "error",
-        content: "Unable to add",
+        content: "Unable to add attendance",
       });
     }
   };
@@ -161,50 +155,41 @@ function AllAttendance() {
       {contextHolder}
       <Header title={"Attendance Sheet"} />
       <div className="selector">
-        <img src={thoppi} alt="" />
+        <img src={thoppi} alt="Class Hat" />
         <h2>Class:</h2>
         <Select
           defaultValue="select"
-          style={{
-            width: 120,
-          }}
+          style={{ width: 150 }}
           onChange={handleChange}
           options={[
-            {
-              value: "keyboard",
-              label: "Keyboard",
-            },
-            {
-              value: "guitar",
-              label: "Guitar",
-            },
-            {
-              value: "drums",
-              label: "Drums",
-            },
-            {
-              value: "vocals",
-              label: "Vocals",
-            },
+            { value: "keyboard", label: "Keyboard" },
+            { value: "guitar", label: "Guitar" },
+            { value: "drums", label: "Drums" },
+            { value: "vocals", label: "Vocals" },
           ]}
         />
+        
       </div>
+      {currentTime && (
+          <div style={{ marginTop: "10px" }}>
+            <p style={{ fontWeight: "bold" }}>⏰ Live Time: {currentTime}</p>
+          </div>
+        )}
 
       <div className="studentsList">
         {filteredStudent && filteredStudent.length > 0 ? (
           <div style={{ marginTop: "20px" }}>
             <h3>Students</h3>
             {filteredStudent
-              .sort((a, b) => a.username.localeCompare(b.username)) // Sort students alphabetically
+              .sort((a, b) => a.username.localeCompare(b.username))
               .map((student) => (
                 <div className="student" key={student.userId}>
                   <div className="nameava">
-                    <img className="ava" src={ava} alt="" />
+                    <img className="ava" src={ava} alt="Avatar" />
                     <p className="stuname">
                       {truncate(student.username || "N/A", 18)}
                     </p>
                   </div>
-
                   <div className="buttons">
                     <Button onClick={() => handleChangeS("present", student)}>
                       Present
